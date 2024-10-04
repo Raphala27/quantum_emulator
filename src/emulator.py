@@ -11,3 +11,4 @@ def tensor_product(matrices):
 def measure_probabilities(state):
     probabilities = np.abs(state) ** 2  # Probabilités = carré des amplitudes
     return probabilities
+
