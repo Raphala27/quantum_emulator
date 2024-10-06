@@ -4,13 +4,13 @@ from src.emulator import tensor_product
 
 
 # Définition des portes quantiques de base
-H = (1/np.sqrt(2)) * np.array([[1, 1], [1, -1]])  # Hadamard
-X = np.array([[0, 1], [1, 0]])  # Pauli-X (NOT)
-Y = np.array([[0, -1j], [1j, 0]])  # Pauli-Y
-Z = np.array([[1, 0], [0, -1]])  # Pauli-Z
-I = np.eye(2)  # Identité pour un qubit
-S = np.array([[1, 0], [0, 1j]])  # S gate (Phase gate)
-T = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]])  # T gate (π/8 gate)
+H = (1/np.sqrt(2)) * np.array([[1, 1], [1, -1]])
+X = np.array([[0, 1], [1, 0]])
+Y = np.array([[0, -1j], [1j, 0]])
+Z = np.array([[1, 0], [0, -1]])
+I = np.eye(2)
+S = np.array([[1, 0], [0, 1j]])
+T = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]])
 
 
 # Appliquer une porte à un qubit spécifique dans un état de n qubits
