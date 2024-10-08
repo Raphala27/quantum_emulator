@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Algorithm Simulator</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        label, select, input, button { display: block; margin-bottom: 10px; }
+        #result { white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Quantum Algorithm Simulator</h1>
+    <form id="algorithm-form">
+        <label for="algorithm">Select Algorithm:</label>
+        <select id="algorithm" name="algorithm">
+            <option value="Grover">Grover</option>
+            <option value="Deutsch-Jozsa">Deutsch-Jozsa</option>
+        </select>
+
+        <label for="num_qubits">Number of Qubits:</label>
+        <input type="number" id="num_qubits" name="num_qubits" required>
+
+        <div id="target_state_container">
+            <label for="target_state">Target State (Grover only):</label>
+            <input type="text" id="target_state" name="target_state">
+        </div>
+
+        <button type="submit">Run Algorithm</button>
+    </form>
+
+    <h2>Result:</h2>
+    <pre id="result"></pre>
+
+    <script>
+        $(document).ready(function() {
+            function updateTargetStateVisibility() {
+                if ($('#algorithm').val() === 'Grover') {
+                    $('#target_state_container').show();
+                } else {
+                    $('#target_state_container').hide();
+                }
+            }
+
+            $('#algorithm').change(updateTargetStateVisibility);
+            updateTargetStateVisibility(); // Call on page load
+
+            $('#algorithm-form').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/run_algorithm',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.error) {
+                            $('#result').text('Error: ' + response.error);
+                        } else {
+                            $('#result').text(response.result);
+                        }
+                    },
+                    error: function() {
+                        $('#result').text('An error occurred while running the algorithm.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

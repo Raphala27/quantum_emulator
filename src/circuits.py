@@ -1,7 +1,12 @@
+from flask import Flask, render_template, request, jsonify
 import numpy as np
-from src.emulator import binary_to_decimal, measure_probabilities, print_results
-from src.gates import apply_single_qubit_gate, apply_cnot, H, X
+import io
+import sys
+from src.emulator import binary_to_decimal, measure_probabilities
 from src.algorithms import grover, deutsch_jozsa
+
+
+
 
 # Fonction pour exécuter un circuit quantique manuel
 def example_circuit_n_qubits(num_qubits):
@@ -93,17 +98,143 @@ def run_algorithm(algorithm_name, num_qubits):
         raise ValueError(f"L'algorithme {algorithm_name} n'est pas implémenté.")
 
 
-# Choix entre la construction manuelle du circuit ou l'exécution d'un algorithme prédéfini
-def main():
-    print("Choisissez l'algorithme quantique à exécuter :")
-    choice = input("Tapez 'g --> grover', 'dj --> deutsch-jozsa': ")
+# New GUI-based main function
+# Modify run_grover and run_deutsch_jozsa to return their output as a string
+def run_grover(target_state_binary):
+    output = io.StringIO()
+    sys.stdout = output
 
-    if choice in ['g', 'dj']:
-        num_qubits = int(input("Combien de qubits dans votre circuit ? "))
-        run_algorithm(choice, num_qubits)
+    n_qubits = len(target_state_binary)
+    target_state = binary_to_decimal(target_state_binary)
+    
+    iterations = int(np.floor(np.pi/4 * np.sqrt(2**n_qubits)))
+    
+    result = grover(n_qubits, target_state, iterations)
+    
+    print(f"Nombre de qubits : {n_qubits}")
+    print(f"État cible : {target_state_binary} (décimal: {target_state})")
+    print(f"Nombre d'itérations : {iterations}")
+    print("\nProbabilités de mesure :")
+    
+    probabilities = measure_probabilities(result)
+    for i, prob in enumerate(probabilities):
+        binary = format(i, f'0{n_qubits}b')
+        print(f"|{binary}⟩ : {prob:.4f}")
+    
+    most_probable_state = format(np.argmax(probabilities), f'0{n_qubits}b')
+    print(f"\nÉtat le plus probable : |{most_probable_state}⟩")
+    print(f"Probabilité de l'état le plus probable : {np.max(probabilities):.4f}")
+
+    sys.stdout = sys.__stdout__
+    return output.getvalue()
+
+def run_deutsch_jozsa(num_qubits):
+    output = io.StringIO()
+    sys.stdout = output
+
+    print(f"Exécution de l'algorithme de Deutsch-Jozsa avec {num_qubits} qubits")
+    
+    choice = np.random.choice(["c", "e"])
+    
+    if choice == "c":
+        constant_value = np.random.choice([0, 1])
+        oracle = lambda state, n: state * (-1)**constant_value
+        print("Fonction choisie : constante")
     else:
-        print("Choix non valide.")
+        oracle = lambda state, n: state * np.array([(-1)**(bin(i).count('1') % 2) for i in range(2**n)])
+        print("Fonction choisie : équilibrée")
+
+    result = deutsch_jozsa(oracle, num_qubits)
+    
+    print(f"Résultat : La fonction est {'constante' if result else 'équilibrée'}")
+
+    sys.stdout = sys.__stdout__
+    return output.getvalue()
+
+# # New GUI-based main function
+# def main():
+#     root = tk.Tk()
+#     root.title("Quantum Algorithm Simulator")
+#     root.geometry("400x300")
+
+#     frame = ttk.Frame(root, padding="10")
+#     frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+#     algorithm_var = tk.StringVar()
+#     num_qubits_var = tk.StringVar()
+#     target_state_var = tk.StringVar()
+
+#     ttk.Label(frame, text="Select Algorithm:").grid(column=0, row=0, sticky=tk.W, pady=5)
+#     algorithm_combo = ttk.Combobox(frame, textvariable=algorithm_var)
+#     algorithm_combo['values'] = ('Grover', 'Deutsch-Jozsa')
+#     algorithm_combo.grid(column=1, row=0, sticky=(tk.W, tk.E), pady=5)
+#     algorithm_combo.current(0)
+
+#     ttk.Label(frame, text="Number of Qubits:").grid(column=0, row=1, sticky=tk.W, pady=5)
+#     ttk.Entry(frame, textvariable=num_qubits_var).grid(column=1, row=1, sticky=(tk.W, tk.E), pady=5)
+
+#     ttk.Label(frame, text="Target State (Grover):").grid(column=0, row=2, sticky=tk.W, pady=5)
+#     ttk.Entry(frame, textvariable=target_state_var).grid(column=1, row=2, sticky=(tk.W, tk.E), pady=5)
+
+#     def run_selected_algorithm():
+#         algorithm = algorithm_var.get()
+#         try:
+#             num_qubits = int(num_qubits_var.get())
+#         except ValueError:
+#             messagebox.showerror("Error", "Please enter a valid number of qubits.")
+#             return
+
+#         if algorithm == "Grover":
+#             target_state = target_state_var.get()
+#             if not all(bit in '01' for bit in target_state) or len(target_state) != num_qubits:
+#                 messagebox.showerror("Error", f"Please enter a valid binary target state with {num_qubits} bits.")
+#                 return
+#             result = run_grover(target_state)
+#         elif algorithm == "Deutsch-Jozsa":
+#             result = run_deutsch_jozsa(num_qubits)
+#         else:
+#             messagebox.showerror("Error", "Please select a valid algorithm.")
+#             return
+
+#         # Print result to console
+#         print(result)
+
+#         # Show result in messagebox
+#         messagebox.showinfo("Algorithm Result", result)
+
+#     ttk.Button(frame, text="Run Algorithm", command=run_selected_algorithm).grid(column=0, row=3, columnspan=2, pady=20)
+
+#     root.mainloop()
+
+# if __name__ == "__main__":
 
 
-if __name__ == "__main__":
-    main()
+app = Flask(__name__)
+
+# Keep your existing functions (run_grover, run_deutsch_jozsa, etc.)
+# Make sure they return strings instead of printing directly
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/run_algorithm', methods=['POST'])
+def run_algorithm():
+    algorithm = request.form['algorithm']
+    num_qubits = int(request.form['num_qubits'])
+    
+    if algorithm == 'Grover':
+        target_state = request.form['target_state']
+        if not all(bit in '01' for bit in target_state) or len(target_state) != num_qubits:
+            return jsonify({'error': f"Please enter a valid binary target state with {num_qubits} bits."})
+        result = run_grover(target_state)
+    elif algorithm == 'Deutsch-Jozsa':
+        result = run_deutsch_jozsa(num_qubits)
+    else:
+        return jsonify({'error': 'Invalid algorithm selected.'})
+    
+    return jsonify({'result': result})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+#     main()
