@@ -209,32 +209,3 @@ def run_deutsch_jozsa(num_qubits):
 # if __name__ == "__main__":
 
 
-app = Flask(__name__)
-
-# Keep your existing functions (run_grover, run_deutsch_jozsa, etc.)
-# Make sure they return strings instead of printing directly
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/run_algorithm', methods=['POST'])
-def run_algorithm():
-    algorithm = request.form['algorithm']
-    num_qubits = int(request.form['num_qubits'])
-    
-    if algorithm == 'Grover':
-        target_state = request.form['target_state']
-        if not all(bit in '01' for bit in target_state) or len(target_state) != num_qubits:
-            return jsonify({'error': f"Please enter a valid binary target state with {num_qubits} bits."})
-        result = run_grover(target_state)
-    elif algorithm == 'Deutsch-Jozsa':
-        result = run_deutsch_jozsa(num_qubits)
-    else:
-        return jsonify({'error': 'Invalid algorithm selected.'})
-    
-    return jsonify({'result': result})
-
-if __name__ == '__main__':
-    app.run(debug=True)
-#     main()
