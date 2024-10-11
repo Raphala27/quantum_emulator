@@ -13,6 +13,11 @@
         <div class="gate" draggable="true" data-gate-type="H">H</div>
         <div class="gate" draggable="true" data-gate-type="CNOT">CNOT</div>
         <div class="gate" draggable="true" data-gate-type="X">X</div>
+        <div class="gate" draggable="true" data-gate-type="Y">Y</div>
+        <div class="gate" draggable="true" data-gate-type="Z">Z</div>
+        <div class="gate" draggable="true" data-gate-type="I">I</div>
+        <div class="gate" draggable="true" data-gate-type="S">S</div>
+        <div class="gate" draggable="true" data-gate-type="T">T</div>
     </div>
 </div>
 <button id="run-circuit">Run Circuit</button>
@@ -27,6 +32,7 @@
     const runCircuitBtn = document.getElementById('run-circuit');
     const resultsDiv = document.getElementById('results');
     let qubitCount = 0;
+    let svg;
 
     addQubitBtn.addEventListener('click', addQubit);
 
@@ -46,12 +52,33 @@
         qubitLine.querySelector('.qubit-wire').addEventListener('dragover', allowDrop);
         qubitLine.querySelector('.qubit-wire').addEventListener('drop', drop);
         
-        // Add click event listener to delete qubit line
         qubitLine.querySelector('.delete-qubit').addEventListener('click', deleteQubitLine);
+
+        if (!svg) {
+            svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.pointerEvents = 'none';
+            circuitArea.appendChild(svg);
+        }
     }
 
     function deleteQubitLine(event) {
         const qubitLine = event.target.closest('.qubit-line');
+        const qubitIndex = Array.from(circuitArea.children).indexOf(qubitLine);
+
+        // Remove any CNOT connections to this qubit
+        svg.querySelectorAll('line').forEach(line => {
+            const controlIndex = parseInt(line.getAttribute('data-control'));
+            const targetIndex = parseInt(line.getAttribute('data-target'));
+            if (controlIndex === qubitIndex || targetIndex === qubitIndex) {
+                removeCNOTConnection(line);
+            }
+        });
+
         circuitArea.removeChild(qubitLine);
         qubitCount--;
         updateQubitLabels();
@@ -83,23 +110,146 @@
         gateElement.textContent = gateType;
         gateElement.setAttribute('data-gate-type', gateType);
         
-        // Add double-click event listener to delete gate
         gateElement.addEventListener('dblclick', deleteGate);
         
-        ev.target.appendChild(gateElement);
+        // Find the first empty spot in the qubit wire
+        let insertPosition = ev.target;
+        while (insertPosition.nextElementSibling && 
+               insertPosition.nextElementSibling.classList.contains('gate')) {
+            insertPosition = insertPosition.nextElementSibling;
+        }
         
-        // Add a small spacer after the gate
+        // Insert the new gate after the last existing gate (or at the start if no gates)
+        if (insertPosition.nextElementSibling) {
+            ev.target.insertBefore(gateElement, insertPosition.nextElementSibling);
+        } else {
+            ev.target.appendChild(gateElement);
+        }
+        
         const spacer = document.createElement('div');
         spacer.className = 'gate-spacer';
-        ev.target.appendChild(spacer);
+        ev.target.insertBefore(spacer, gateElement.nextSibling);
+
+        if (gateType === 'CNOT') {
+            gateElement.classList.add('cnot-target');
+            gateElement.addEventListener('mousedown', startCNOTConnection);
+        }
+    }
+
+    let activeCNOT = null;
+    let tempLine = null;
+
+    function startCNOTConnection(event) {
+        event.preventDefault();
+        activeCNOT = event.target;
+
+        // Remove existing connection if there is one
+        removeExistingCNOTConnection(activeCNOT);
+
+        tempLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        tempLine.setAttribute('stroke', 'black');
+        tempLine.setAttribute('stroke-width', '2');
+        
+        svg.appendChild(tempLine);
+
+        document.addEventListener('mousemove', updateCNOTConnection);
+        document.addEventListener('mouseup', finishCNOTConnection);
+        
+        document.body.classList.add('no-select');
+    }
+
+    function removeExistingCNOTConnection(cnotGate) {
+        const targetIndex = Array.from(circuitArea.children).indexOf(cnotGate.closest('.qubit-line'));
+        const existingLine = svg.querySelector(`line[data-target="${targetIndex}"]`);
+        if (existingLine) {
+            svg.removeChild(existingLine);
+        }
+        cnotGate.removeAttribute('data-control');
+        cnotGate.removeAttribute('data-target');
+    }
+
+    function updateCNOTConnection(event) {
+        const rect = activeCNOT.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+        const startX = rect.left - svgRect.left + rect.width / 2;
+        const startY = rect.top - svgRect.top;  // Top of the CNOT gate
+        
+        tempLine.setAttribute('x1', startX);
+        tempLine.setAttribute('y1', startY);
+        tempLine.setAttribute('x2', event.clientX - svgRect.left);
+        tempLine.setAttribute('y2', event.clientY - svgRect.top);
+    }
+
+    function finishCNOTConnection(event) {
+        document.removeEventListener('mousemove', updateCNOTConnection);
+        document.removeEventListener('mouseup', finishCNOTConnection);
+
+        const controlQubit = document.elementFromPoint(event.clientX, event.clientY);
+        if (controlQubit && controlQubit.classList.contains('qubit-wire')) {
+            const controlIndex = Array.from(circuitArea.children).indexOf(controlQubit.closest('.qubit-line'));
+            const targetIndex = Array.from(circuitArea.children).indexOf(activeCNOT.closest('.qubit-line'));
+            
+            if (controlIndex !== targetIndex) {
+                const controlRect = controlQubit.getBoundingClientRect();
+                const targetRect = activeCNOT.getBoundingClientRect();
+                const svgRect = svg.getBoundingClientRect();
+                
+                const startX = targetRect.left - svgRect.left + targetRect.width / 2;
+                const startY = targetRect.top - svgRect.top + (controlIndex < targetIndex ? 0 : targetRect.height);
+                const endX = startX;
+                const endY = controlRect.top - svgRect.top + controlRect.height / 2;
+                
+                tempLine.setAttribute('x1', startX);
+                tempLine.setAttribute('y1', startY);
+                tempLine.setAttribute('x2', endX);
+                tempLine.setAttribute('y2', endY);
+                
+                tempLine.setAttribute('data-control', controlIndex);
+                tempLine.setAttribute('data-target', targetIndex);
+                
+                activeCNOT.setAttribute('data-control', controlIndex);
+                activeCNOT.setAttribute('data-target', targetIndex);
+            } else {
+                svg.removeChild(tempLine);
+                tempLine = null;
+            }
+        } else {
+            svg.removeChild(tempLine);
+            tempLine = null;
+        }
+
+        activeCNOT = null;
+        document.body.classList.remove('no-select');
     }
 
     function deleteGate(event) {
         const gateElement = event.target;
         const spacer = gateElement.nextElementSibling;
+        
+        // If it's a CNOT gate, remove its connection
+        if (gateElement.getAttribute('data-gate-type') === 'CNOT') {
+            removeExistingCNOTConnection(gateElement);
+        }
+
         gateElement.parentNode.removeChild(gateElement);
         if (spacer && spacer.className === 'gate-spacer') {
             spacer.parentNode.removeChild(spacer);
+        }
+    }
+
+    function removeCNOTConnection(line) {
+        // Remove the line
+        svg.removeChild(line);
+
+        // Remove the data attributes from the CNOT gate
+        const targetIndex = parseInt(line.getAttribute('data-target'));
+        const targetQubit = circuitArea.children[targetIndex];
+        if (targetQubit) {
+            const cnotGate = targetQubit.querySelector('.gate[data-gate-type="CNOT"]');
+            if (cnotGate) {
+                cnotGate.removeAttribute('data-control');
+                cnotGate.removeAttribute('data-target');
+            }
         }
     }
 
@@ -107,34 +257,45 @@
 
     function runCircuit() {
         const circuit = [];
+        const numQubits = circuitArea.querySelectorAll('.qubit-line').length; // Count the number of qubit lines
+
         circuitArea.querySelectorAll('.qubit-line').forEach((qubitLine, qubitIndex) => {
             qubitLine.querySelectorAll('.gate').forEach((gate, gateIndex) => {
-                circuit.push({
-                    type: gate.dataset.gateType,
+                const gateType = gate.getAttribute('data-gate-type');
+                const gateInfo = {
+                    type: gateType,
                     qubit: qubitIndex,
                     position: gateIndex
-                });
+                };
+                
+                if (gateType === 'CNOT') {
+                    const controlIndex = parseInt(gate.getAttribute('data-control'));
+                    if (!isNaN(controlIndex)) {
+                        gateInfo.control = controlIndex;
+                        gateInfo.target = qubitIndex;
+                    } else {
+                        console.warn('CNOT gate without control qubit found');
+                        return; // Skip this gate
+                    }
+                }
+                
+                circuit.push(gateInfo);
             });
         });
 
-        console.log('Sending circuit to backend:', circuit);
-
+        // Send the circuit data along with the number of qubits
         fetch('/run_circuit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                num_qubits: qubitCount,
-                circuit: circuit
-            }),
+            body: JSON.stringify({ circuit: circuit, num_qubits: numQubits }), // Include num_qubits
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received data from backend:', data);
             displayResults(data);
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Error:', error);
         });
     }
@@ -199,6 +360,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        margin-bottom: 20px; /* Add space between qubit lines */
     }
     .qubit-label {
         display: flex;
@@ -213,6 +375,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        padding-left: 10px;  /* Add some padding at the start of the wire */
     }
     .gate {
         width: 40px;
@@ -225,6 +388,7 @@
         cursor: move;
         position: relative;
         z-index: 1;
+        margin-right: 10px;  /* Add some space between gates */
     }
     .gate-spacer {
         width: 10px;
@@ -253,6 +417,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .cnot-target {
+        cursor: crosshair;
+    }
+    .no-select {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    #circuit-area {
+        position: relative;
+        padding-bottom: 20px; /* Add some padding at the bottom */
+        overflow: visible; /* Ensure SVG lines are not cut off */
     }
 </style>
 {% endblock %}

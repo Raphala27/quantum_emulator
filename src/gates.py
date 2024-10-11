@@ -21,6 +21,7 @@ def apply_single_qubit_gate(gate, qubit_index, state, num_qubits):
     return np.dot(full_gate, state)
 
 
+
 def apply_cnot(control, target, state, num_qubits):
 
     cnot = np.eye(2 ** num_qubits, dtype=complex)
@@ -34,6 +35,10 @@ def apply_cnot(control, target, state, num_qubits):
     
     return np.dot(cnot, state)
 
+# New funtions
+
+
+
 # Add this new function
 def apply_gate(gate_type, params, state, num_qubits):
     if gate_type == 'H':
@@ -41,8 +46,17 @@ def apply_gate(gate_type, params, state, num_qubits):
     elif gate_type == 'CNOT':
         return apply_cnot(params['control'], params['target'], state, num_qubits)
     elif gate_type == 'X':
-        return apply_single_qubit_gate(X, params['qubit'], state, num_qubits)
+        return apply_single_qubit_gate(X, params['qubit'], state, num_qubits)    
+    elif gate_type == 'Y':
+        return apply_single_qubit_gate(Y, params['qubit'], state, num_qubits)
+    elif gate_type == 'Z':
+        return apply_single_qubit_gate(Z, params['qubit'], state, num_qubits)
+    elif gate_type == 'I':
+        return apply_single_qubit_gate(I, params['qubit'], state, num_qubits)
+    elif gate_type == 'S':
+        return apply_single_qubit_gate(S, params['qubit'], state, num_qubits)
+    elif gate_type == 'T':
+        return apply_single_qubit_gate(T, params['qubit'], state, num_qubits)
+
     else:
         raise ValueError(f"Unknown gate type: {gate_type}")
-
-# ... existing code ...
