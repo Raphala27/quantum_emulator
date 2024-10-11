@@ -4,5 +4,255 @@
 
 {% block content %}
 <h2>Custom Quantum Circuits</h2>
-<p>This feature is coming soon. Here you'll be able to create and run custom quantum circuits.</p>
+<div id="circuit-builder">
+    <div id="qubit-controls">
+        <button id="add-qubit">+ Add Qubit</button>
+    </div>
+    <div id="circuit-area"></div>
+    <div id="gate-palette">
+        <div class="gate" draggable="true" data-gate-type="H">H</div>
+        <div class="gate" draggable="true" data-gate-type="CNOT">CNOT</div>
+        <div class="gate" draggable="true" data-gate-type="X">X</div>
+    </div>
+</div>
+<button id="run-circuit">Run Circuit</button>
+<div id="results">
+    <canvas id="resultsChart"></canvas>
+</div>
+
+<script>
+    const circuitArea = document.getElementById('circuit-area');
+    const addQubitBtn = document.getElementById('add-qubit');
+    const gatePalette = document.getElementById('gate-palette');
+    const runCircuitBtn = document.getElementById('run-circuit');
+    const resultsDiv = document.getElementById('results');
+    let qubitCount = 0;
+
+    addQubitBtn.addEventListener('click', addQubit);
+
+    function addQubit() {
+        const qubitLine = document.createElement('div');
+        qubitLine.className = 'qubit-line';
+        qubitLine.innerHTML = `
+            <div class="qubit-label">
+                <button class="delete-qubit">×</button>
+                <span>q${qubitCount}</span>
+            </div>
+            <div class="qubit-wire"></div>
+        `;
+        circuitArea.appendChild(qubitLine);
+        qubitCount++;
+
+        qubitLine.querySelector('.qubit-wire').addEventListener('dragover', allowDrop);
+        qubitLine.querySelector('.qubit-wire').addEventListener('drop', drop);
+        
+        // Add click event listener to delete qubit line
+        qubitLine.querySelector('.delete-qubit').addEventListener('click', deleteQubitLine);
+    }
+
+    function deleteQubitLine(event) {
+        const qubitLine = event.target.closest('.qubit-line');
+        circuitArea.removeChild(qubitLine);
+        qubitCount--;
+        updateQubitLabels();
+    }
+
+    function updateQubitLabels() {
+        circuitArea.querySelectorAll('.qubit-line').forEach((line, index) => {
+            line.querySelector('.qubit-label span').textContent = `q${index}`;
+        });
+    }
+
+    gatePalette.querySelectorAll('.gate').forEach(gate => {
+        gate.addEventListener('dragstart', drag);
+    });
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text/plain", ev.target.getAttribute('data-gate-type'));
+    }
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        const gateType = ev.dataTransfer.getData("text/plain");
+        const gateElement = document.createElement('div');
+        gateElement.className = 'gate';
+        gateElement.textContent = gateType;
+        gateElement.setAttribute('data-gate-type', gateType);
+        
+        // Add double-click event listener to delete gate
+        gateElement.addEventListener('dblclick', deleteGate);
+        
+        ev.target.appendChild(gateElement);
+        
+        // Add a small spacer after the gate
+        const spacer = document.createElement('div');
+        spacer.className = 'gate-spacer';
+        ev.target.appendChild(spacer);
+    }
+
+    function deleteGate(event) {
+        const gateElement = event.target;
+        const spacer = gateElement.nextElementSibling;
+        gateElement.parentNode.removeChild(gateElement);
+        if (spacer && spacer.className === 'gate-spacer') {
+            spacer.parentNode.removeChild(spacer);
+        }
+    }
+
+    runCircuitBtn.addEventListener('click', runCircuit);
+
+    function runCircuit() {
+        const circuit = [];
+        circuitArea.querySelectorAll('.qubit-line').forEach((qubitLine, qubitIndex) => {
+            qubitLine.querySelectorAll('.gate').forEach((gate, gateIndex) => {
+                circuit.push({
+                    type: gate.dataset.gateType,
+                    qubit: qubitIndex,
+                    position: gateIndex
+                });
+            });
+        });
+
+        console.log('Sending circuit to backend:', circuit);
+
+        fetch('/run_circuit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                num_qubits: qubitCount,
+                circuit: circuit
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Received data from backend:', data);
+            displayResults(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    let resultsChart;
+
+    function displayResults(data) {
+        console.log('Displaying results:', data);
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+        
+        const labels = data.map(item => item.state);
+        const probabilities = data.map(item => item.probability);
+
+        console.log('Labels:', labels);
+        console.log('Probabilities:', probabilities);
+
+        if (resultsChart) {
+            resultsChart.destroy();
+        }
+
+        resultsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Probability',
+                    data: probabilities,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Quantum State Probabilities'
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    #circuit-builder {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .qubit-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .qubit-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 50px;
+    }
+    .qubit-wire {
+        flex-grow: 1;
+        height: 40px;
+        border-top: 2px solid #000;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .gate {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #000;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: move;
+        position: relative;
+        z-index: 1;
+    }
+    .gate-spacer {
+        width: 10px;
+        height: 40px;
+    }
+    #gate-palette {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    #results {
+        margin-top: 20px;
+        width: 100%;
+        max-width: 800px;
+    }
+    .delete-qubit {
+        background: none;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        color: red;
+        padding: 0;
+        width: 15px;
+        height: 15px;
+        line-height: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 {% endblock %}

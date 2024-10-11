@@ -33,3 +33,16 @@ def apply_cnot(control, target, state, num_qubits):
             cnot[i, flipped_state] = 1
     
     return np.dot(cnot, state)
+
+# Add this new function
+def apply_gate(gate_type, params, state, num_qubits):
+    if gate_type == 'H':
+        return apply_single_qubit_gate(H, params['qubit'], state, num_qubits)
+    elif gate_type == 'CNOT':
+        return apply_cnot(params['control'], params['target'], state, num_qubits)
+    elif gate_type == 'X':
+        return apply_single_qubit_gate(X, params['qubit'], state, num_qubits)
+    else:
+        raise ValueError(f"Unknown gate type: {gate_type}")
+
+# ... existing code ...
