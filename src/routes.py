@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from src.gates import apply_gate
 from src.emulator import measure_probabilities
 from src.circuits import run_grover, run_deutsch_jozsa
+from src.algorithms import solve_qubo
 import numpy as np
 
 def register_routes(app):
@@ -29,6 +30,16 @@ def register_routes(app):
             result = run_grover(target_state)
         elif algorithm == 'Deutsch-Jozsa':
             result = run_deutsch_jozsa(num_qubits)
+        elif algorithm == 'QUBO':
+            Q = np.array(request.json['Q'])  # Expecting a 2D list for the QUBO matrix
+            p = request.json.get('p', 1)  # Optional parameter for the number of layers
+            solution, cost = solve_qubo(Q, p)
+            return jsonify({'solution': solution.tolist(), 'cost': cost})
+        elif algorithm == 'QAOA':
+            Q = np.array(request.json['Q'])  # Expecting a 2D list for the QUBO matrix
+            p = request.json.get('p', 1)  # Optional parameter for the number of layers
+            solution, cost = solve_qubo(Q, p)  # Assuming you want to use the same function for QAOA
+            return jsonify({'solution': solution.tolist(), 'cost': cost})
         else:
             return jsonify({'error': 'Invalid algorithm selected.'})
         

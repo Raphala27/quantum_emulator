@@ -13,6 +13,8 @@
     <select id="algorithm" name="algorithm">
         <option value="Grover">Grover</option>
         <option value="Deutsch-Jozsa">Deutsch-Jozsa</option>
+        <option value="QUBO">QUBO</option>
+        <option value="QAOA">QAOA</option>
     </select>
 
     <label for="num_qubits">Number of Qubits:</label>
@@ -21,6 +23,20 @@
     <div id="target_state_container">
         <label for="target_state">Target State (Grover only):</label>
         <input type="text" id="target_state" name="target_state">
+    </div>
+
+    <div id="qubo_container" style="display:none;">
+        <label for="qubo_matrix">QUBO Matrix (JSON format):</label>
+        <textarea id="qubo_matrix" name="qubo_matrix" rows="4" placeholder='e.g. [[0, -1], [-1, 0]]'></textarea>
+        <label for="p_layers">Number of Layers (p):</label>
+        <input type="number" id="p_layers" name="p_layers" value="1" min="1">
+    </div>
+
+    <div id="qaoa_container" style="display:none;">
+        <label for="qaoa_matrix">QAOA Matrix (JSON format):</label>
+        <textarea id="qaoa_matrix" name="qaoa_matrix" rows="4" placeholder='e.g. [[0, -1], [-1, 0]]'></textarea>
+        <label for="p_layers_qaoa">Number of Layers (p):</label>
+        <input type="number" id="p_layers_qaoa" name="p_layers_qaoa" value="1" min="1">
     </div>
 
     <button type="submit">Run Algorithm</button>
@@ -34,8 +50,20 @@
         function updateTargetStateVisibility() {
             if ($('#algorithm').val() === 'Grover') {
                 $('#target_state_container').show();
+                $('#qubo_container').hide();
+                $('#qaoa_container').hide();
+            } else if ($('#algorithm').val() === 'QUBO') {
+                $('#target_state_container').hide();
+                $('#qubo_container').show();
+                $('#qaoa_container').hide();
+            } else if ($('#algorithm').val() === 'QAOA') {
+                $('#target_state_container').hide();
+                $('#qubo_container').hide();
+                $('#qaoa_container').show();
             } else {
                 $('#target_state_container').hide();
+                $('#qubo_container').hide();
+                $('#qaoa_container').hide();
             }
         }
 
@@ -44,15 +72,28 @@
 
         $('#algorithm-form').submit(function(e) {
             e.preventDefault();
+            let formData = $(this).serializeArray();
+            let data = {};
+            formData.forEach(function(item) {
+                data[item.name] = item.value;
+            });
+
+            // Handle QUBO and QAOA matrix input
+            if (data.algorithm === 'QUBO' || data.algorithm === 'QAOA') {
+                data.Q = JSON.parse(data.algorithm === 'QUBO' ? data.qubo_matrix : data.qaoa_matrix);
+                data.p = data.algorithm === 'QAOA' ? data.p_layers_qaoa : data.p_layers;
+            }
+
             $.ajax({
                 url: '/run_algorithm',
                 method: 'POST',
-                data: $(this).serialize(),
+                contentType: 'application/json',
+                data: JSON.stringify(data),
                 success: function(response) {
                     if (response.error) {
                         $('#result').text('Error: ' + response.error);
                     } else {
-                        $('#result').text(response.result);
+                        $('#result').text(response.result || JSON.stringify(response));
                     }
                 },
                 error: function() {
