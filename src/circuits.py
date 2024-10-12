@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
 import io
-import sys
 from src.emulator import binary_to_decimal, measure_probabilities
 from src.algorithms import grover, deutsch_jozsa
+import sys
 
+from src.gates import H, X, apply_cnot, apply_single_qubit_gate
 
 
 
