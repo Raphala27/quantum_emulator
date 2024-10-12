@@ -22,7 +22,7 @@ def apply_single_qubit_gate(gate, qubit_index, state, num_qubits):
 
 
 
-def apply_cnot(control, target, state, num_qubits):
+def apply_cnot(target, control, state, num_qubits):
 
     cnot = np.eye(2 ** num_qubits, dtype=complex)
     for i in range(2 ** num_qubits):
