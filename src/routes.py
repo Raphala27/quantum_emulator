@@ -20,24 +20,26 @@ def register_routes(app):
 
     @app.route('/run_algorithm', methods=['POST'])
     def run_algorithm():
-        algorithm = request.form['algorithm']
-        num_qubits = int(request.form['num_qubits'])
+        # Change from request.form to request.json for the entire request
+        data = request.json  # Expecting JSON format for the entire request
+        algorithm = data['algorithm']
+        num_qubits = int(data['num_qubits'])
         
         if algorithm == 'Grover':
-            target_state = request.form['target_state']
+            target_state = data['target_state']
             if not all(bit in '01' for bit in target_state) or len(target_state) != num_qubits:
                 return jsonify({'error': f"Please enter a valid binary target state with {num_qubits} bits."})
             result = run_grover(target_state)
         elif algorithm == 'Deutsch-Jozsa':
             result = run_deutsch_jozsa(num_qubits)
         elif algorithm == 'QUBO':
-            Q = np.array(request.json['Q'])  # Expecting a 2D list for the QUBO matrix
-            p = request.json.get('p', 1)  # Optional parameter for the number of layers
+            Q = np.array(data['Q'])  # Expecting a 2D list for the QUBO matrix
+            p = data.get('p', 1)  # Optional parameter for the number of layers
             solution, cost = solve_qubo(Q, p)
             return jsonify({'solution': solution.tolist(), 'cost': cost})
         elif algorithm == 'QAOA':
-            Q = np.array(request.json['Q'])  # Expecting a 2D list for the QUBO matrix
-            p = request.json.get('p', 1)  # Optional parameter for the number of layers
+            Q = np.array(data['Q'])  # Expecting a 2D list for the QUBO matrix
+            p = data.get('p', 1)  # Optional parameter for the number of layers
             solution, cost = solve_qubo(Q, p)  # Assuming you want to use the same function for QAOA
             return jsonify({'solution': solution.tolist(), 'cost': cost})
         else:
