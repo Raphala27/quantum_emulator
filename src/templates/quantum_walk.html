@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/css/style.css">
+
 <a href="/" class="back-button" title="Retour au menu principal">
     <svg viewBox="0 0 24 24">
         <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
@@ -10,74 +12,54 @@
 <div class="quantum-walk-container">
     <h1>Marches Quantiques</h1>
     
-    <section class="introduction">
-        <h2>Introduction aux Marches Quantiques</h2>
-        <p>Les marches quantiques sont l'analogue quantique des marches aléatoires classiques. Elles représentent un modèle fondamental pour comprendre le transport quantique et le développement d'algorithmes quantiques.</p>
+    <!-- Dropdown Menu for Sommaire -->
+    <div class="dropdown">
+        <button class="dropbtn">Sommaire</button>
+        <div class="dropdown-content">
+            <a href="#section1">I. Les marches aléatoires classiques</a>
+            <a href="#section2">II. Introduction aux marches aléatoires quantiques</a>
+            <a href="#section3">III. Propriétés des marches aléatoires quantiques</a>
+            <a href="#section4">IV. Applications des marches aléatoires quantiques</a>
+            <a href="#section5">V. Comparaison entre marches aléatoires classiques et quantiques</a>
+            <a href="#section6">VI. Conclusion</a>
+            <a href="#section7">VII. Références</a>
+        </div>
+    </div>
+
+    <!-- Sections from PDF -->
+    <section id="section1">
+        <h2>I. Les marches aléatoires classiques</h2>
+        <p>Historique: L'idée de la marche aléatoire a été introduite en 1905 par le biostatisticien Karl Pearson...</p>
     </section>
 
-    <section class="definition">
-        <h2>Définition et Concepts</h2>
-        <div class="concept-box">
-            <h3>Marche Aléatoire Classique</h3>
-            <p>Une marche aléatoire est un processus stochastique qui décrit le mouvement aléatoire d'une particule dans un espace donné. À chaque étape, la particule se déplace selon une distribution de probabilité définie.</p>
-        </div>
-        
-        <div class="concept-box">
-            <h3>Marche Quantique</h3>
-            <p>Une marche quantique utilise les principes de la mécanique quantique, notamment :</p>
-            <ul>
-                <li>La superposition d'états</li>
-                <li>L'interférence quantique</li>
-                <li>L'enchevêtrement quantique</li>
-            </ul>
-        </div>
+    <section id="section2">
+        <h2>II. Introduction aux marches aléatoires quantiques</h2>
+        <p>Une marche aléatoire quantique (quantum walk) est une version quantique de la marche aléatoire classique...</p>
     </section>
 
-    <section class="types">
-        <h2>Types de Marches Quantiques</h2>
-        <div class="type-grid">
-            <div class="type-card">
-                <h3>Marches Discrètes</h3>
-                <p>Évolution sur un réseau discret avec des pas de temps discrets.</p>
-            </div>
-            
-            <div class="type-card">
-                <h3>Marches Continues</h3>
-                <p>Évolution continue dans le temps et/ou l'espace.</p>
-            </div>
-        </div>
+    <section id="section3">
+        <h2>III. Propriétés des marches aléatoires quantiques</h2>
+        <p>Vitesse de propagation: Comparaison avec les marches aléatoires classiques...</p>
     </section>
 
-    <section class="applications">
-        <h2>Applications</h2>
-        <div class="app-grid">
-            <div class="app-card">
-                <h3>Algorithmes Quantiques</h3>
-                <ul>
-                    <li>Recherche spatiale</li>
-                    <li>Optimisation</li>
-                    <li>Simulation quantique</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>Physique</h3>
-                <ul>
-                    <li>Transport quantique</li>
-                    <li>Dynamique des systèmes</li>
-                    <li>Phénomènes de localisation</li>
-                </ul>
-            </div>
-        </div>
+    <section id="section4">
+        <h2>IV. Applications des marches aléatoires quantiques</h2>
+        <p>Algorithmes quantiques: Exemples d'algorithmes exploitant les marches aléatoires...</p>
     </section>
 
-    <section class="references">
-        <h2>Références</h2>
-        <div class="ref-list">
-            <a href="https://www.science.org/doi/10.1126/sciadv.aat3174" target="_blank">Quantum walks and quantum simulation of wave equation</a>
-            <a href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.103.062202" target="_blank">Quantum walks: principles and applications</a>
-            <a href="https://ar5iv.labs.arxiv.org/html/1201.4780" target="_blank">Quantum walks for computer scientists</a>
-        </div>
+    <section id="section5">
+        <h2>V. Comparaison entre marches aléatoires classiques et quantiques</h2>
+        <p>Différences fondamentales dans le comportement...</p>
+    </section>
+
+    <section id="section6">
+        <h2>VI. Conclusion</h2>
+        <p>Synthèse des concepts abordés...</p>
+    </section>
+
+    <section id="section7">
+        <h2>VII. Références</h2>
+        <p>Bibliographie des ouvrages et articles sur les marches aléatoires classiques et quantiques...</p>
     </section>
 </div>
 {% endblock %} 
