@@ -5,6 +5,15 @@ from src.circuits import run_grover, run_deutsch_jozsa
 from src.algorithms import solve_qubo
 import numpy as np
 
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "Hello, World!"
+
+if __name__ == "__main__":
+    app.run()
+
 def register_routes(app):
     @app.route('/')
     def index():
