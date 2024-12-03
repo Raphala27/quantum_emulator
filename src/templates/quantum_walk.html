@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="quantum-walk-container">
+    <h1>Marches Quantiques</h1>
+    
+    <section class="introduction">
+        <h2>Introduction aux Marches Quantiques</h2>
+        <p>Les marches quantiques sont l'analogue quantique des marches aléatoires classiques. Elles représentent un modèle fondamental pour comprendre le transport quantique et le développement d'algorithmes quantiques.</p>
+    </section>
+
+    <section class="definition">
+        <h2>Définition et Concepts</h2>
+        <div class="concept-box">
+            <h3>Marche Aléatoire Classique</h3>
+            <p>Une marche aléatoire est un processus stochastique qui décrit le mouvement aléatoire d'une particule dans un espace donné. À chaque étape, la particule se déplace selon une distribution de probabilité définie.</p>
+        </div>
+        
+        <div class="concept-box">
+            <h3>Marche Quantique</h3>
+            <p>Une marche quantique utilise les principes de la mécanique quantique, notamment :</p>
+            <ul>
+                <li>La superposition d'états</li>
+                <li>L'interférence quantique</li>
+                <li>L'enchevêtrement quantique</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="types">
+        <h2>Types de Marches Quantiques</h2>
+        <div class="type-grid">
+            <div class="type-card">
+                <h3>Marches Discrètes</h3>
+                <p>Évolution sur un réseau discret avec des pas de temps discrets.</p>
+            </div>
+            
+            <div class="type-card">
+                <h3>Marches Continues</h3>
+                <p>Évolution continue dans le temps et/ou l'espace.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="applications">
+        <h2>Applications</h2>
+        <div class="app-grid">
+            <div class="app-card">
+                <h3>Algorithmes Quantiques</h3>
+                <ul>
+                    <li>Recherche spatiale</li>
+                    <li>Optimisation</li>
+                    <li>Simulation quantique</li>
+                </ul>
+            </div>
+            
+            <div class="app-card">
+                <h3>Physique</h3>
+                <ul>
+                    <li>Transport quantique</li>
+                    <li>Dynamique des systèmes</li>
+                    <li>Phénomènes de localisation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="references">
+        <h2>Références</h2>
+        <div class="ref-list">
+            <a href="https://www.science.org/doi/10.1126/sciadv.aat3174" target="_blank">Quantum walks and quantum simulation of wave equation</a>
+            <a href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.103.062202" target="_blank">Quantum walks: principles and applications</a>
+            <a href="https://ar5iv.labs.arxiv.org/html/1201.4780" target="_blank">Quantum walks for computer scientists</a>
+        </div>
+    </section>
+</div>
+{% endblock %} 
