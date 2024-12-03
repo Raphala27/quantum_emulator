@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, request
 from src.gates import apply_gate
 from src.emulator import measure_probabilities
 from src.circuits import run_grover, run_deutsch_jozsa
@@ -80,3 +80,15 @@ def register_routes(app):
             })
 
         return jsonify(results)
+
+    @app.route('/quantum_emulator')
+    def quantum_emulator():
+        return render_template('quantum_emulator.html')
+
+    @app.route('/quantum_walk')
+    def quantum_walk():
+        return render_template('quantum_walk.html')
+
+    @app.route('/quantum_art')
+    def quantum_art():
+        return render_template('quantum_art.html')

@@ -1,10 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Welcome to the Quantum Emulator</h2>
-<p>This emulator allows you to experiment with quantum algorithms and circuits.</p>
-<ul>
-    <li><a href="/algorithms">Run predefined algorithms</a> (Grover, Deutsch-Jozsa)</li>
-    <li><a href="/custom_circuits">Create custom quantum circuits</a></li>
-</ul>
+<div class="landing-container">
+    <h1>Bienvenue dans l'Univers Quantique</h1>
+    
+    <div class="quantum-choices-container">
+        <div class="quantum-choices">
+            <div class="quantum-card">
+                <h2>Quantum Emulator</h2>
+                <p>Expérimentez avec des circuits et algorithmes quantiques</p>
+                <a href="/quantum_emulator" class="quantum-button">Explorer</a>
+            </div>
+
+            <div class="quantum-card">
+                <h2>Quantum Walk</h2>
+                <p>Découvrez les marches quantiques et leurs applications</p>
+                <a href="/quantum_walk" class="quantum-button">Explorer</a>
+            </div>
+
+            <div class="quantum-card">
+                <h2>Quantum Art</h2>
+                <p>Générez de l'art basé sur des phénomènes quantiques</p>
+                <a href="/quantum_art" class="quantum-button">Explorer</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
