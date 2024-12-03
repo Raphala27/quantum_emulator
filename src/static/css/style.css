@@ -184,6 +184,13 @@ footer a:hover {
     border-radius: 25px;
     margin-top: 1rem;
     transition: all 0.3s ease;
+    width: auto;
+    min-width: 120px;
+    max-width: 100%; /* Assure que le bouton ne dépasse pas du conteneur */
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
+    display: block; /* Assure que le bouton prend toute la largeur disponible */
+    text-align: center; /* Centre le texte à l'intérieur du bouton */
+    margin: 0 auto; /* Centre le bouton horizontalement */
 }
 
 .quantum-button:hover {
@@ -480,4 +487,34 @@ footer a:hover {
     .canvas-container {
         height: 300px;
     }
+}
+
+/* Style pour le bouton de retour */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+    fill: #3498db;
 }
