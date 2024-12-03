@@ -1,5 +1,5 @@
 # Quantum Emulator
-
+![Alt text](quantum_emulator.png)
 
 ### For the installation
 RUN  
