@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="quantum-art-container">
+    <h1>Art Quantique</h1>
+    
+    <section class="art-intro">
+        <h2>Créez de l'Art avec la Physique Quantique</h2>
+        <p>Explorez la beauté des phénomènes quantiques à travers des visualisations artistiques générées par des simulations quantiques.</p>
+    </section>
+
+    <div class="art-workspace">
+        <section class="art-controls">
+            <div class="control-panel">
+                <h3>Paramètres de Génération</h3>
+                
+                <div class="control-group">
+                    <label for="art-type">Type d'Art</label>
+                    <select id="art-type">
+                        <option value="interference">Motifs d'Interférence</option>
+                        <option value="entanglement">Visualisation d'Intrication</option>
+                        <option value="superposition">Superposition d'États</option>
+                        <option value="random">Aléatoire Quantique</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="color-scheme">Palette de Couleurs</label>
+                    <select id="color-scheme">
+                        <option value="quantum">Quantum Blue</option>
+                        <option value="rainbow">Arc-en-ciel Quantique</option>
+                        <option value="monochrome">Monochrome</option>
+                        <option value="neon">Néon</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="complexity">Complexité</label>
+                    <input type="range" id="complexity" min="1" max="10" value="5">
+                    <span class="complexity-value">5</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="iterations">Nombre d'Itérations</label>
+                    <input type="range" id="iterations" min="100" max="1000" step="100" value="500">
+                    <span class="iterations-value">500</span>
+                </div>
+
+                <button id="generate-art" class="quantum-button">Générer</button>
+                <button id="download-art" class="quantum-button secondary">Télécharger</button>
+            </div>
+        </section>
+
+        <section class="art-display">
+            <div class="canvas-container">
+                <canvas id="quantum-canvas"></canvas>
+                <div class="loading-overlay hidden">
+                    <div class="spinner"></div>
+                    <p>Génération en cours...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="art-gallery">
+        <h2>Galerie d'Art Quantique</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="{{ url_for('static', filename='images/quantum-art-1.jpg') }}" alt="Art Quantique 1">
+                <div class="gallery-item-info">
+                    <h4>Interférence Quantique</h4>
+                    <p>Visualisation des motifs d'interférence d'ondes quantiques</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ url_for('static', filename='images/quantum-art-2.jpg') }}" alt="Art Quantique 2">
+                <div class="gallery-item-info">
+                    <h4>Intrication</h4>
+                    <p>Représentation artistique de particules intriquées</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{{ url_for('static', filename='images/quantum-art-3.jpg') }}" alt="Art Quantique 3">
+                <div class="gallery-item-info">
+                    <h4>Superposition</h4>
+                    <p>États quantiques superposés</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('quantum-canvas');
+    const ctx = canvas.getContext('2d');
+    const generateBtn = document.getElementById('generate-art');
+    const downloadBtn = document.getElementById('download-art');
+    const complexityInput = document.getElementById('complexity');
+    const iterationsInput = document.getElementById('iterations');
+    const complexityValue = document.querySelector('.complexity-value');
+    const iterationsValue = document.querySelector('.iterations-value');
+
+    // Mettre à jour les valeurs affichées
+    complexityInput.addEventListener('input', function() {
+        complexityValue.textContent = this.value;
+    });
+
+    iterationsInput.addEventListener('input', function() {
+        iterationsValue.textContent = this.value;
+    });
+
+    // Ajuster la taille du canvas
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Génération d'art
+    generateBtn.addEventListener('click', function() {
+        const artType = document.getElementById('art-type').value;
+        const colorScheme = document.getElementById('color-scheme').value;
+        const complexity = parseInt(complexityInput.value);
+        const iterations = parseInt(iterationsInput.value);
+
+        // Afficher le loading
+        document.querySelector('.loading-overlay').classList.remove('hidden');
+
+        // Simuler la génération (à remplacer par votre véritable logique)
+        setTimeout(() => {
+            generateQuantumArt(artType, colorScheme, complexity, iterations);
+            document.querySelector('.loading-overlay').classList.add('hidden');
+        }, 1000);
+    });
+
+    // Fonction de génération d'art (exemple simple)
+    function generateQuantumArt(type, colors, complexity, iterations) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Exemple simple de génération de motifs
+        for (let i = 0; i < iterations; i++) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            const size = Math.random() * complexity * 2;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = getColor(colors, i / iterations);
+            ctx.fill();
+        }
+    }
+
+    // Fonction pour obtenir une couleur
+    function getColor(scheme, t) {
+        switch(scheme) {
+            case 'quantum':
+                return `hsl(200, 80%, ${50 + 30 * Math.sin(t * Math.PI * 2)}%)`;
+            case 'rainbow':
+                return `hsl(${t * 360}, 80%, 50%)`;
+            case 'monochrome':
+                return `hsl(0, 0%, ${t * 100}%)`;
+            case 'neon':
+                return `hsl(${300 + t * 60}, 100%, 60%)`;
+            default:
+                return `hsl(200, 80%, 50%)`;
+        }
+    }
+
+    // Téléchargement de l'art
+    downloadBtn.addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = 'quantum-art.png';
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+});
+</script>
+{% endblock %} 
