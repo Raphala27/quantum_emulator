@@ -108,3 +108,15 @@ def register_routes(app):
     @app.route('/quantum_art')
     def quantum_art():
         return render_template('quantum_art.html')
+
+    @app.route('/random_walk')
+    def random_walk():
+        return render_template('random_walk.html')
+
+    @app.route('/measure_probability')
+    def measure_probability():
+        # Exemple de mesure de probabilité
+        # Remplacez ceci par l'appel à votre fonction dans emulator.py
+        state = np.array([1, 0])  # Exemple d'état quantique
+        probabilities = np.abs(state) ** 2  # Calcul des probabilités
+        return jsonify(probabilities=probabilities.tolist())

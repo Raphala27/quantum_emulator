@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/quantum_walk#section1" class="back-button" title="Retour au menu principal">
+    <svg viewBox="0 0 24 24">
+        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+    </svg>
+</a>
+
+<div class="random-walk-container">
+    <h1>Random Walk Simulation</h1>
+
+    <form method="get" action="/random_walk" class="walk-form">
+        <div class="form-group">
+            <label for="walkType">Type de Marche :</label>
+            <select id="walkType" name="type">
+                <option value="classic" {% if request.args.get('type') == 'classic' %}selected{% endif %}>Classique</option>
+                <option value="quantum" {% if request.args.get('type') == 'quantum' %}selected{% endif %}>Quantique</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="movementType">Type de Mouvement :</label>
+            <select id="movementType" name="movement">
+                <option value="linear" {% if request.args.get('movement') == 'linear' %}selected{% endif %}>Linéaire</option>
+                <option value="2d" {% if request.args.get('movement') == '2d' %}selected{% endif %}>2D</option>
+                <option value="3d" {% if request.args.get('movement') == '3d' %}selected{% endif %}>3D</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="iterations">Nombre d'Itérations :</label>
+            <input type="number" id="iterations" name="iterations" min="1" max="100" value="{{ request.args.get('iterations', 10)}}" onchange="updateSteps()">
+        </div>
+
+        <button type="submit" class="submit-button">Générer</button>
+    </form>
+
+    <canvas id="walkCanvas" width="800" height="400"></canvas>
+
+    <div id="results" class="results-container">
+        <h2>Résultats</h2>
+        <p id="resultText">Sélectionnez les options et cliquez sur "Générer".</p>
+        <p id="quantumResults"></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let steps = parseInt(document.getElementById('iterations').value); // Nombre d'étapes
+    let pathClassic = [];
+    let path2D = [];
+    let path3D = [];
+
+    function randomWalkClassic(steps) {
+        let position = 0;
+        pathClassic = [position];
+        for (let i = 0; i < steps; i++) {
+            position += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire
+            pathClassic.push(position);
+        }
+        drawWalk(pathClassic, 'Marche Aléatoire Classique');
+    }
+
+    function randomWalk2D(steps) {
+        let position = { x: 0, y: 0 };
+        path2D = [{ ...position }];
+        for (let i = 0; i < steps; i++) {
+            const direction = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+            switch (direction) {
+                case 0: position.y += 1; break; // haut
+                case 1: position.y -= 1; break; // bas
+                case 2: position.x -= 1; break; // gauche
+                case 3: position.x += 1; break; // droite
+            }
+            path2D.push({ ...position });
+        }
+        drawWalk2D(path2D, 'Marche Aléatoire en 2D');
+    }
+
+    function randomWalk3D(steps) {
+        let position = { x: 0, y: 0, z: 0 };
+        path3D = [{ ...position }];
+        for (let i = 0; i < steps; i++) {
+            const direction = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+            switch (direction) {
+                case 0: position.x += 1; break; // droite
+                case 1: position.x -= 1; break; // gauche
+                case 2: position.y += 1; break; // haut
+                case 3: position.y -= 1; break; // bas
+                case 4: position.z += 1; break; // avant
+                case 5: position.z -= 1; break; // arrière
+            }
+            path3D.push({ ...position });
+        }
+        drawWalk3D(path3D, 'Marche Aléatoire en 3D');
+    }
+
+    function drawWalk(path, title) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la marche
+        ctx.beginPath();
+        ctx.moveTo(0, 200); // Position de départ
+
+        for (let i = 0; i < path.length; i++) {
+            ctx.lineTo(i * (800 / steps), 200 - path[i] * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+        ctx.fillText(title, 10, 20);
+    }
+
+    function drawWalk2D(path, title) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la marche en 2D
+        ctx.beginPath();
+        ctx.moveTo(400, 200); // Position de départ
+
+        for (let i = 0; i < path.length; i++) {
+            ctx.lineTo(400 + path[i].x * 20, 200 - path[i].y * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+        ctx.fillText(title, 10, 20);
+    }
+
+    function drawWalk3D(path, title) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Afficher le titre
+        ctx.fillText(title, 10, 20);
+        ctx.fillText("Marche en 3D:", 10, 50);
+
+        // Définir les dimensions du cube
+        const cubeSize = 100;
+        const offsetX = ctx.canvas.width / 2;
+        const offsetY = ctx.canvas.height / 2;
+
+        // Dessiner le cube
+        ctx.strokeStyle = '#ccc';
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
+        ctx.stroke();
+
+        // Dessiner la marche en 3D
+        for (let i = 0; i < path.length; i++) {
+            const x = offsetX + path[i].x * 10; // Ajuster l'échelle
+            const y = offsetY - path[i].y * 10; // Ajuster l'échelle
+            const z = path[i].z; // Utiliser z pour la profondeur
+
+            // Projeter les coordonnées 3D sur le canevas 2D
+            const projectedX = x + (z * 5); // Projection en fonction de z
+            const projectedY = y - (z * 5); // Projection en fonction de z
+
+            // Déterminer la couleur en fonction de la profondeur
+            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+            ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
+
+            // Dessiner le point
+            ctx.beginPath();
+            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+            ctx.fill();
+        }
+    }
+
+    const walkType = document.getElementById('walkType');
+    const movementType = document.getElementById('movementType');
+
+    function generateWalk() {
+        steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes ici
+        const selectedWalkType = walkType.value;
+        const selectedMovementType = movementType.value;
+
+        if (selectedWalkType === 'classic') {
+            randomWalkClassic(steps);
+            document.getElementById('resultText').innerText = "Marche Aléatoire Classique générée.";
+        } else if (selectedWalkType === 'quantum') {
+            // Appel à l'API pour mesurer la probabilité
+            fetch('/measure_probability')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + data.probabilities.join(", ");
+                    document.getElementById('resultText').innerText = "Marche Aléatoire Quantique générée.";
+                });
+        }
+
+        // Ne pas appeler le mouvement 2D si le mouvement 3D est sélectionné
+        if (selectedMovementType === 'linear') {
+            randomWalkClassic(steps);
+            document.getElementById('resultText').innerText = "Marche Aléatoire Linéaire générée.";
+        } else if (selectedMovementType === '2d') {
+            randomWalk2D(steps);
+            document.getElementById('resultText').innerText = "Marche Aléatoire en 2D générée.";
+        } else if (selectedMovementType === '3d') {
+            randomWalk3D(steps);
+            document.getElementById('resultText').innerText = "Marche Aléatoire en 3D générée.";
+        }
+    }
+
+    // Appel de la fonction de génération lors de la soumission du formulaire
+    document.querySelector('.walk-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+        generateWalk();
+    });
+
+    function updateSteps() {
+        steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes
+    }
+</script>
+
+<style>
+    .random-walk-container {
+        text-align: center;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .walk-form {
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 1.2em;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    select, input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .submit-button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.2em;
+        transition: background-color 0.3s;
+    }
+
+    .submit-button:hover {
+        background-color: #2980b9;
+    }
+
+    .results-container {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        background-color: #ecf0f1;
+    }
+
+    #resultText {
+        font-size: 1.2em;
+        color: #2c3e50;
+    }
+</style>
+{% endblock %} 
