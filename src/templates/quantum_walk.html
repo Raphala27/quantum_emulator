@@ -23,7 +23,14 @@
             <a href="#section5">V. Comparaison entre marches aléatoires classiques et quantiques</a>
             <a href="#section6">VI. Conclusion</a>
             <a href="#section7">VII. Références</a>
+            <a href="#section8">Simulation</a>
         </div>
+    </div>
+
+    <!-- New section for names and image -->
+    <div id="team-info" class="team-info" style="display: none;">
+        <h2>Hamon Ewan – Matthieu Laruelle – Marc Bertholat – Raphaël Issartial</h2>
+        <img src="/static/img/0.png" alt="Photo de l'équipe" class="team-image">
     </div>
 
     <!-- Sections from PDF -->
@@ -91,49 +98,90 @@
         <p>Imaginez un jeu où un joueur se trouve au centre d'une ligne et lance une pièce de monnaie. Si la pièce tombe
             sur pile, il avance d'un pas ; si elle tombe sur face, il recule. La position finale du joueur après
             plusieurs lancers représente le résultat d'une marche aléatoire simple sur une dimension. </p>
-        <img src="../img/1.png" alt="Description of the image" class="your-image-class">
+
+        <img src="/static/img/1.png" alt="Description of the image" class="your-image-class resized-image">
 
     </section>
 
     <section id="section2">
         <h2>II. Introduction aux marches aléatoires quantiques</h2>
-        <p>Une marche aléatoire quantique (quantum walk) est une version quantique de la marche aléatoire classique, exploitant les propriétés uniques de la mécanique quantique, notamment la superposition et l'intrication.</p>
+        <p>Une marche aléatoire quantique (quantum walk) est une version quantique de la marche aléatoire classique,
+            exploitant les propriétés uniques de la mécanique quantique, notamment la superposition et l'intrication.
+        </p>
 
         <h3>Superposition Quantique</h3>
-        <p>Définition : Le principe de superposition quantique stipule qu'un système quantique peut exister dans plusieurs états simultanément jusqu'à ce qu'une mesure soit effectuée.</p>
+        <p>Définition : Le principe de superposition quantique stipule qu'un système quantique peut exister dans
+            plusieurs états simultanément jusqu'à ce qu'une mesure soit effectuée.</p>
         <h4>Caractéristiques :</h4>
-        <p>Dans une marche aléatoire classique, l'objet choisit une direction à chaque étape. En revanche, dans une marche quantique, l'objet peut être dans un état de superposition, lui permettant de "se déplacer" simultanément dans plusieurs directions.</p>
-        <p>Mathématiquement, un état quantique peut être représenté comme une superposition linéaire d'états de base :</p>
+        <p>Dans une marche aléatoire classique, l'objet choisit une direction à chaque étape. En revanche, dans une
+            marche quantique, l'objet peut être dans un état de superposition, lui permettant de "se déplacer"
+            simultanément dans plusieurs directions.</p>
+        <p>Mathématiquement, un état quantique peut être représenté comme une superposition linéaire d'états de base :
+        </p>
+        <img src="/static/img/2.1.png" alt="Description of the image" class="your-image-class resized-image">
         <p>où α et β sont des nombres complexes tels que |α|² + |β|² = 1</p>
-        <p>Exemple : Le célèbre chat de Schrödinger illustre la superposition. Tant que la boîte n'est pas ouverte, le chat est à la fois vivant et mort dans une superposition d'états, et l'état se "réduit" à l'un ou l'autre lorsque la mesure est effectuée.</p>
+        <p>Exemple : Le célèbre chat de Schrödinger illustre la superposition. Tant que la boîte n'est pas ouverte, le
+            chat est à la fois vivant et mort dans une superposition d'états, et l'état se "réduit" à l'un ou l'autre
+            lorsque la mesure est effectuée.</p>
 
         <h3>Intrication Quantique</h3>
-        <p>Définition : L'intrication quantique est un phénomène où deux particules deviennent liées, de sorte qu'un changement d'état de l'une affecte instantanément l'état de l'autre, quelle que soit la distance qui les sépare.</p>
+        <p>Définition : L'intrication quantique est un phénomène où deux particules deviennent liées, de sorte qu'un
+            changement d'état de l'une affecte instantanément l'état de l'autre, quelle que soit la distance qui les
+            sépare.</p>
         <h4>Caractéristiques :</h4>
         <p>Les particules intriquées partagent un état quantique unique, même si elles sont spatialement séparées.</p>
-        <p>Par exemple, si on mesure le spin d'une particule intriquée, on obtient instantanément des informations sur l'état de l'autre particule.</p>
-        <p>Exemple : Si on a deux particules intriquées, A et B, et que l'on mesure le spin de A, si A a un spin vers le haut, alors B aura nécessairement un spin vers le bas, et vice versa.</p>
-        <p>Relation avec la Superposition : L'intrication est une forme particulière de superposition. Lorsque deux particules sont intriquées, elles existent dans une superposition d'états corrélés.</p>
-        <p>Importance : Ces concepts sont à la base de nombreux domaines de recherche, notamment l'informatique quantique, la cryptographie quantique et la téléportation quantique. Ils remettent en question notre compréhension de la réalité et ouvrent des perspectives fascinantes pour le futur.</p>
+        <p>Par exemple, si on mesure le spin d'une particule intriquée, on obtient instantanément des informations sur
+            l'état de l'autre particule.</p>
+        <p>Exemple : Si on a deux particules intriquées, A et B, et que l'on mesure le spin de A, si A a un spin vers le
+            haut, alors B aura nécessairement un spin vers le bas, et vice versa.</p>
+        <p>Relation avec la Superposition : L'intrication est une forme particulière de superposition. Lorsque deux
+            particules sont intriquées, elles existent dans une superposition d'états corrélés, illustrée par l'état
+            intriqué : </p>
+        <img src="/static/img/2.2.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Importance : Ces concepts sont à la base de nombreux domaines de recherche, notamment l'informatique
+            quantique, la cryptographie quantique et la téléportation quantique. Ils remettent en question notre
+            compréhension de la réalité et ouvrent des perspectives fascinantes pour le futur.</p>
 
         <h3>Impact de la mécanique quantique sur le comportement</h3>
         <h4>1. Vitesse de Dispersion : Comparaison des Distributions de Probabilité</h4>
-        <p>Marche aléatoire classique : Dans une marche aléatoire classique en une dimension, la probabilité P(x,t) de trouver le marcheur à la position x après t étapes suit une distribution gaussienne.</p>
-        <p>Cette distribution gaussienne implique que la position du marcheur suit une croissance en √ t (c'est-à-dire diffusivement).</p>
-        <p>Marche aléatoire quantique : En revanche, dans une marche aléatoire quantique, la distribution de probabilité se propage linéairement avec le temps t, ce qui entraîne une vitesse de dispersion beaucoup plus rapide.</p>
-        <p>Cette propriété de dispersion balistique signifie que la distribution de probabilité se déplace plus rapidement que dans une marche classique. Cette rapidité de dispersion s'explique par le fait que la particule quantique se trouve dans une superposition de multiples états positionnels, amplifiant ainsi son rayon de dispersion.</p>
+        <p>Marche aléatoire classique : Dans une marche aléatoire classique en une dimension, la probabilité P(x,t) de
+            trouver le marcheur à la position x après t étapes suit une distribution gaussienne. La formule est : </p>
+        <img src="/static/img/2.3.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Cette distribution gaussienne implique que la position du marcheur suit une croissance en √ t (c'est-à-dire
+            diffusivement).</p>
+        <p>Marche aléatoire quantique : En revanche, dans une marche aléatoire quantique, la distribution de probabilité
+            se propage linéairement avec le temps t, ce qui entraîne une vitesse de dispersion beaucoup plus rapide :
+        </p>
+        <img src="/static/img/2.4.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Cette propriété de dispersion balistique signifie que la distribution de probabilité se déplace plus
+            rapidement que dans une marche classique. Cette rapidité de dispersion s'explique par le fait que la
+            particule quantique se trouve dans une superposition de multiples états positionnels, amplifiant ainsi son
+            rayon de dispersion.</p>
 
         <h4>2. Effets d'Interférence : Influence de la Superposition sur les Chemins</h4>
-        <p>Dans une marche quantique, le marcheur est dans une superposition d'états, ce qui permet à différentes trajectoires de produire des interférences constructives ou destructives. Cela peut être modélisé en utilisant une matrice de rotation unitaire pour chaque "coin quantique."</p>
-        <p>Fonction d'état dans la marche quantique : Soit ∣ψ(t)⟩ l'état quantique du marcheur après t étapes. Chaque étape est décrite par une opération unitaire U appliquée à l'état initial ∣ψ(0)⟩.</p>
-        <p>Matrice de coin quantique (Hadamard) : Pour chaque étape, on utilise une transformation de Hadamard H qui met la particule en superposition d'aller à gauche ou à droite.</p>
-        <p>Évolution de l'état quantique : L'état évolue de manière à créer des interférences entre les trajectoires. Les états de position gauche et droite se combinent, renforçant ou annulant des probabilités, ce qui entraîne des pics de probabilité distincts par rapport à une marche classique.</p>
+        <p>Dans une marche quantique, le marcheur est dans une superposition d'états, ce qui permet à différentes
+            trajectoires de produire des interférences constructives ou destructives. Cela peut être modélisé en
+            utilisant une matrice de rotation unitaire pour chaque "coin quantique."</p>
+        <p>Fonction d'état dans la marche quantique : Soit ∣ψ(t)⟩ l'état quantique du marcheur après t étapes. Chaque
+            étape est décrite par une op��ration unitaire U appliquée à l'état initial ∣ψ(0)⟩ : </p>
+        <img src="/static/img/2.5.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Matrice de coin quantique (Hadamard) : Pour chaque étape, on utilise une transformation de Hadamard H qui met
+            la particule en superposition d'aller à gauche ou à droite : </p>
+        <img src="/static/img/2.6.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Évolution de l'état quantique : L'état évolue de manière à créer des interférences entre les trajectoires.
+            Les états de position gauche et droite se combinent, renforçant ou annulant des probabilités, ce qui
+            entraîne des pics de probabilité distincts par rapport à une marche classique.</p>
 
         <h4>3. Directionnalité : Biais Induit par le Coin Quantique</h4>
-        <p>La marche aléatoire quantique peut présenter une directionnalité influencée par le type de "quantum coin" utilisé (le coin quantique est la matrice de rotation appliquée à chaque étape).</p>
-        <p>Coin biaisé : Pour introduire une directionnalité dans la marche quantique, on peut utiliser une matrice de coin biaisée.</p>
-        <p>Si θ ≠ π/4, alors la marche quantique présente une probabilité accrue de se déplacer dans une direction spécifique, créant un biais.</p>
-        <p>Dans une marche classique, un tel biais pourrait être introduit en utilisant des probabilités asymétriques, mais le biais dans une marche quantique est renforcé par la superposition et l'interférence.</p>
+        <p>La marche aléatoire quantique peut présenter une directionnalité influencée par le type de "quantum coin"
+            utilisé (le coin quantique est la matrice de rotation appliquée à chaque étape).</p>
+        <p>Coin biaisé : Pour introduire une directionnalité dans la marche quantique, on peut utiliser une matrice de
+            coin biaisée, par exemple : </p>
+        <img src="/static/img/2.7.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Si θ ≠ π/4, alors la marche quantique présente une probabilité accrue de se déplacer dans une direction
+            spécifique, créant un biais.</p>
+        <p>Dans une marche classique, un tel biais pourrait être introduit en utilisant des probabilités asymétriques,
+            mais le biais dans une marche quantique est renforcé par la superposition et l'interférence.</p>
 
         <h3>Description du modèle mathématique</h3>
         <p>L'espace d'états d'une marche aléatoire quantique se compose de deux parties :</p>
@@ -145,16 +193,23 @@
         <p>L'évolution de la marche quantique est régie par deux opérations :</p>
         <p>Opération de pièce C : Agit sur l'espace de pièce.</p>
         <p>Opération de déplacement S : Déplace le marcheur selon l'état de la pièce.</p>
-        <p>L'opérateur d'évolution global pour une étape est donné par : U=S(I⊗C) où I est l'opérateur identité sur l'espace de position.</p>
+        <p>L'opérateur d'évolution global pour une étape est donné par : U=S(I⊗C) où I est l'opérateur identité sur
+            l'espace de position.</p>
+        <img src="/static/img/2.8.png" alt="Description of the image" class="your-image-class resized-image">
 
         <h3>Marche de Hadamard</h3>
-        <p>Un choix courant pour l'opération de pièce est l'opérateur de Hadamard.</p>
+        <p>Un choix courant pour l'opération de pièce est l'opérateur de Hadamard : </p>
+        <img src="/static/img/2.9.png" alt="Description of the image" class="your-image-class resized-image">
         <p>L'opérateur de déplacement S est défini comme :</p>
-        <p>Cela déplace le marcheur d'un pas vers la droite si l'état de la pièce est ∣0⟩, et d'un pas vers la gauche s'il est ∣1⟩.</p>
+        <img src="/static/img/2.10.png" alt="Description of the image" class="your-image-class resized-image">
+        <p>Cela déplace le marcheur d'un pas vers la droite si l'état de la pièce est ∣0⟩, et d'un pas vers la gauche
+            s'il est ∣1⟩.</p>
 
         <h3>Distribution de Probabilité</h3>
         <p>Après n étapes, l'état de la marche quantique est :</p>
+        <img src="/static/img/2.11.png" alt="Description of the image" class="your-image-class resized-image">
         <p>où ∣ψ0⟩ est l'état initial. La probabilité de trouver le marcheur à la position x après n étapes est :</p>
+        <img src="/static/img/2.12.png" alt="Description of the image" class="your-image-class resized-image">
         <p>où Trc désigne la trace partielle sur l'espace de pièce.</p>
     </section>
 
@@ -162,102 +217,191 @@
         <h2>III. Propriétés des marches aléatoires quantiques</h2>
 
         <h3>Vitesse de propagation : comparaison</h3>
-        <p>La vitesse de propagation est une caractéristique fondamentale qui différencie les marches aléatoires classiques des marches aléatoires quantiques.</p>
+        <p>La vitesse de propagation est une caractéristique fondamentale qui différencie les marches aléatoires
+            classiques des marches aléatoires quantiques.</p>
 
         <h4>Marches Aléatoires Classiques : Diffusion Lente</h4>
-        <p>Dans une marche aléatoire classique, la position moyenne du marcheur évolue proportionnellement à la racine carrée du temps, selon une diffusion de type Brownien.</p>
+        <p>Dans une marche aléatoire classique, la position moyenne du marcheur évolue proportionnellement à la racine
+            carrée du temps, selon une diffusion de type Brownien.</p>
         <p>La largeur de la distribution de probabilité (ou écart-type) suit la loi : σ(t) ∝ t</p>
-        <p>Cela signifie qu’au fur et à mesure que le temps passe, le marcheur classique s’éloigne lentement de son point de départ, la diffusion restant concentrée autour de la position initiale. Ce comportement est typique des processus de diffusion, comme le mouvement des molécules dans un fluide, et montre que l’exploration de l’espace de recherche est limitée à court terme.</p>
+        <p>Cela signifie qu’au fur et à mesure que le temps passe, le marcheur classique s’éloigne lentement de son
+            point de départ, la diffusion restant concentrée autour de la position initiale. Ce comportement est typique
+            des processus de diffusion, comme le mouvement des molécules dans un fluide, et montre que l’exploration de
+            l’espace de recherche est limitée à court terme.</p>
 
         <h4>Marches Aléatoires Quantiques : Propagation Rapide</h4>
-        <p>Dans une marche aléatoire quantique, le marcheur utilise la superposition et l’interférence pour se propager beaucoup plus rapidement. En effet, la distribution de probabilité d’une marche quantique s’étend linéairement avec le temps, ce qui est souvent qualifié de "ballistique" : σ(t) ∝ t</p>
-        <p>Cela signifie qu’en un temps donné, le marcheur quantique parcourt une distance beaucoup plus grande qu’un marcheur classique, avec une distribution qui s’étend plus rapidement. Ce phénomène est dû aux effets d'interférence quantique, qui renforcent certaines trajectoires tout en annulant d'autres, permettant ainsi une exploration plus efficace de l’espace.</p>
+        <p>Dans une marche aléatoire quantique, le marcheur utilise la superposition et l’interférence pour se propager
+            beaucoup plus rapidement. En effet, la distribution de probabilité d’une marche quantique s’étend
+            linéairement avec le temps, ce qui est souvent qualifié de "ballistique" : σ(t) ∝ t</p>
+        <p>Cela signifie qu’en un temps donné, le marcheur quantique parcourt une distance beaucoup plus grande qu’un
+            marcheur classique, avec une distribution qui s’étend plus rapidement. Ce phénomène est dû aux effets
+            d'interférence quantique, qui renforcent certaines trajectoires tout en annulant d'autres, permettant ainsi
+            une exploration plus efficace de l’espace.</p>
 
         <h4>Visualisation des Différences de Propagation</h4>
-        <p>Dans un graphe de la position en fonction du temps, la distribution d’un marcheur classique s’étalerait en une courbe gaussienne centrée sur la position de départ et s’élargissant lentement.</p>
-        <p>Pour une marche quantique, en revanche, la distribution aurait une forme bien distincte avec deux pics principaux s’éloignant du point de départ, formant une courbe en "M". Ces deux pics traduisent une plus grande probabilité de trouver le marcheur à des positions extrêmes, ce qui contraste avec la répartition centrée et symétrique d’une marche classique.</p>
+        <p>Dans un graphe de la position en fonction du temps, la distribution d’un marcheur classique s’étalerait en
+            une courbe gaussienne centrée sur la position de départ et s’élargissant lentement.</p>
+        <p>Pour une marche quantique, en revanche, la distribution aurait une forme bien distincte avec deux pics
+            principaux s’éloignant du point de départ, formant une courbe en "M". Ces deux pics traduisent une plus
+            grande probabilité de trouver le marcheur à des positions extrêmes, ce qui contraste avec la répartition
+            centrée et symétrique d’une marche classique.</p>
+        <img src="/static/img/3.1.png" alt="Description of the image" class="your-image-class resized-image">
 
-        <p>(B) An evolution pattern of a 2D QW from heralded single-photon experiment at a propagation length z = 4.31 mm and its projection profile onto the x and y axes. (C) A theoretical evolution pattern of a 2D classical random walk in a 2D Gaussian distribution with a sigma of 1.5 spacing units and its projection profile onto the x and y axes.</p>
+        <p>(B) An evolution pattern of a 2D QW from heralded single-photon experiment at a propagation length z = 4.31
+            mm and its projection profile onto the x and y axes. (C) A theoretical evolution pattern of a 2D classical
+            random walk in a 2D Gaussian distribution with a sigma of 1.5 spacing units and its projection profile onto
+            the x and y axes.</p>
 
         <h3>Avantages des marches aléatoires quantiques</h3>
         <h4>Capacité d'explorer des espaces plus vastes</h4>
-        <p>En mécanique quantique, la superposition permet à un marcheur quantique de prendre plusieurs chemins simultanément au lieu de suivre une seule trajectoire comme dans les marches classiques. Cette capacité se révèle particulièrement puissante pour des applications nécessitant une exploration exhaustive d'un espace de solutions.</p>
+        <p>En mécanique quantique, la superposition permet à un marcheur quantique de prendre plusieurs chemins
+            simultanément au lieu de suivre une seule trajectoire comme dans les marches classiques. Cette capacité se
+            révèle particulièrement puissante pour des applications nécessitant une exploration exhaustive d'un espace
+            de solutions.</p>
 
         <h4>Potentiel d’accélération des algorithmes quantiques</h4>
-        <p>La vitesse de propagation linéaire du marcheur quantique en fonction du temps permet de gagner en efficacité, comparativement à la diffusion quadratique des marches classiques. Cette accélération est particulièrement utile pour des algorithmes nécessitant de trouver une solution optimale en réduisant les chemins non pertinents grâce à des interférences constructives et destructives.</p>
+        <p>La vitesse de propagation linéaire du marcheur quantique en fonction du temps permet de gagner en efficacité,
+            comparativement à la diffusion quadratique des marches classiques. Cette accélération est particulièrement
+            utile pour des algorithmes nécessitant de trouver une solution optimale en réduisant les chemins non
+            pertinents grâce à des interférences constructives et destructives.</p>
     </section>
 
     <section id="section4">
         <h2>IV. Applications des marches aléatoires quantiques</h2>
 
-        <p>Voici les sources associées aux exemples d'algorithmes et applications des marches aléatoires quantiques mentionnés :</p>
+        <p>Voici les sources associées aux exemples d'algorithmes et applications des marches aléatoires quantiques
+            mentionnés :</p>
 
         <h3>Algorithmes quantiques</h3>
-        <p>Algorithme de recherche dans des graphes : L'algorithme quantique de recherche, basé sur les marches quantiques développées par Lov Grover, permet de rechercher des éléments marqués dans un graphe avec une efficacité supérieure à celle des méthodes classiques. Cet algorithme est détaillé dans l'article de G.A. Bezerra, P.H.G. Lugão, et R. Portugal, publié dans Physical Review A en 2021. Ce travail explore l'extension des méthodes analytiques à divers types de graphes, y compris les grilles bidimensionnelles et les hypercubes.</p>
-        <p>Optimisation et résolution de problèmes de décision : Les marches aléatoires quantiques sont utilisées dans l'algorithme de détection de collisions de L. Magniez, M. Santha, et M. Szegedy, qui améliore les temps de recherche dans des bases de données non structurées. Cette méthode est basée sur des extensions des marches quantiques pour explorer des structures de données complexes. Ces travaux ont été publiés dans des conférences sur l'informatique quantique et sont également référencés sur arXiv pour des versions révisées.</p>
+        <p>Algorithme de recherche dans des graphes : L'algorithme quantique de recherche, basé sur les marches
+            quantiques développées par Lov Grover, permet de rechercher des éléments marqués dans un graphe avec une
+            efficacité supérieure à celle des méthodes classiques. Cet algorithme est détaillé dans l'article de G.A.
+            Bezerra, P.H.G. Lugão, et R. Portugal, publié dans Physical Review A en 2021. Ce travail explore l'extension
+            des méthodes analytiques à divers types de graphes, y compris les grilles bidimensionnelles et les
+            hypercubes.</p>
+        <p>Optimisation et résolution de problèmes de décision : Les marches aléatoires quantiques sont utilisées dans
+            l'algorithme de détection de collisions de L. Magniez, M. Santha, et M. Szegedy, qui améliore les temps de
+            recherche dans des bases de données non structurées. Cette méthode est basée sur des extensions des marches
+            quantiques pour explorer des structures de données complexes. Ces travaux ont été publiés dans des
+            conférences sur l'informatique quantique et sont également référencés sur arXiv pour des versions révisées.
+        </p>
 
         <h3>Applications dans la recherche d’optimisation</h3>
-        <p>Problèmes de couverture minimale : Les QW aident à identifier les solutions optimales dans des espaces de solutions étendus.</p>
-        <p>Modèles d'optimisation dynamique : Intégration des QW pour résoudre des problèmes comme le "voyageur de commerce" ou le routage.</p>
+        <p>Problèmes de couverture minimale : Les QW aident à identifier les solutions optimales dans des espaces de
+            solutions étendus.</p>
+        <p>Modèles d'optimisation dynamique : Intégration des QW pour résoudre des problèmes comme le "voyageur de
+            commerce" ou le routage.</p>
 
         <h3>Implications en physique théorique et informatique quantique</h3>
-        <p>Simulation des particules : Les marches aléatoires quantiques sont également utilisées pour modéliser des systèmes physiques, notamment dans la dynamique des particules. Par exemple, dans cet article, des chercheurs ont utilisé des marches aléatoires quantiques bidimensionnelles pour modéliser des interactions non linéaires, où deux particules interagissent uniquement lorsqu'elles occupent la même position dans l'espace. Cela a permis de simuler des phénomènes tels que des collisions de particules et la formation d'états moléculaires liés, prédits par la théorie quantique.</p>
-        <p>Cryptographie quantique : Amélioration des protocoles de communication sécurisée via l'exploration de chemins optimaux.</p>
-        <p>Informatique quantique : Utilisées dans les simulations pour la résolution des équations de Schrödinger discrètes.</p>
+        <p>Simulation des particules : Les marches aléatoires quantiques sont également utilisées pour modéliser des
+            systèmes physiques, notamment dans la dynamique des particules. Par exemple, dans cet article, des
+            chercheurs ont utilisé des marches aléatoires quantiques bidimensionnelles pour modéliser des interactions
+            non linéaires, où deux particules interagissent uniquement lorsqu'elles occupent la même position dans
+            l'espace. Cela a permis de simuler des phénomènes tels que des collisions de particules et la formation
+            d'états moléculaires liés, prédits par la théorie quantique.</p>
+        <p>Cryptographie quantique : Amélioration des protocoles de communication sécurisée via l'exploration de chemins
+            optimaux.</p>
+        <p>Informatique quantique : Utilisées dans les simulations pour la résolution des équations de Schrödinger
+            discrètes.</p>
     </section>
 
     <section id="section5">
         <h2>V. Comparaison entre marches aléatoires classiques et quantiques</h2>
 
         <h3>Différences fondamentales</h3>
-        <p>Les marches aléatoires classiques se basent sur des transitions probabilistes entre états, modélisant des processus comme la diffusion de particules ou la prise de décisions aléatoires. Leur probabilité de position après plusieurs étapes suit souvent une distribution gaussienne. En revanche, les marches quantiques reposent sur des transitions unitaires, exploitant des superpositions d’états et l’interférence quantique. Cela leur confère une distribution de probabilité beaucoup plus large, augmentant ainsi la probabilité d’atteindre des zones éloignées plus rapidement que dans un modèle classique.</p>
+        <p>Les marches aléatoires classiques se basent sur des transitions probabilistes entre états, modélisant des
+            processus comme la diffusion de particules ou la prise de décisions aléatoires. Leur probabilité de position
+            après plusieurs étapes suit souvent une distribution gaussienne. En revanche, les marches quantiques
+            reposent sur des transitions unitaires, exploitant des superpositions d’états et l’interférence quantique.
+            Cela leur confère une distribution de probabilité beaucoup plus large, augmentant ainsi la probabilité
+            d’atteindre des zones éloignées plus rapidement que dans un modèle classique.</p>
 
         <h3>Avantages et inconvénients de chaque modèle</h3>
         <h4>Classiques :</h4>
-        <p>Avantages : Simples à implémenter, largement étudiées, adaptées aux systèmes où seules des probabilités classiques sont nécessaires.</p>
-        <p>Inconvénients : Leur convergence peut être lente, particulièrement dans des systèmes complexes où un grand nombre d’étapes est requis pour obtenir une distribution stationnaire (par exemple, pour l'��chantillonnage dans des graphes de grande taille).</p>
+        <p>Avantages : Simples à implémenter, largement étudiées, adaptées aux systèmes où seules des probabilités
+            classiques sont nécessaires.</p>
+        <p>Inconvénients : Leur convergence peut être lente, particulièrement dans des systèmes complexes où un grand
+            nombre d’étapes est requis pour obtenir une distribution stationnaire (par exemple, pour l'échantillonnage
+            dans des graphes de grande taille).</p>
 
         <h4>Quantiques :</h4>
-        <p>Avantages : Les marches quantiques permettent une accélération significative dans des tâches comme la recherche dans des bases de données (exemple : algorithme de Grover) ou l'échantillonnage rapide grâce à leur capacité à explorer plusieurs chemins simultanément grâce à la superposition.</p>
-        <p>Inconvénients : Leur implémentation nécessite un contrôle précis des systèmes quantiques et reste limitée par les contraintes matérielles actuelles (comme la décohérence). Leur programmation nécessite une infrastructure avancée comme des ordinateurs quantiques.</p>
+        <p>Avantages : Les marches quantiques permettent une accélération significative dans des tâches comme la
+            recherche dans des graphes (exemple : algorithme de Grover) ou l'échantillonnage rapide grâce à leur
+            capacité à explorer plusieurs chemins simultanément grâce à la superposition.</p>
+        <p>Inconvénients : Leur implémentation nécessite un contrôle précis des systèmes quantiques et reste limitée par
+            les contraintes matérielles actuelles (comme la décohérence). Leur programmation nécessite une
+            infrastructure avancée comme des ordinateurs quantiques.</p>
 
         <h3>Applications concrètes</h3>
         <h4>Recherche dans des graphes :</h4>
-        <p>Les marches aléatoires classiques sont utilisées pour des problèmes comme la navigation dans les réseaux ou l'échantillonnage statistique. Les marches quantiques, elles, trouvent des applications dans des algorithmes comme celui de Szegedy, où elles permettent une recherche plus rapide dans les bases de données non structurées.</p>
+        <p>Les marches aléatoires classiques sont utilisées pour des problèmes comme la navigation dans les réseaux ou
+            l'échantillonnage statistique. Les marches quantiques, elles, trouvent des applications dans des algorithmes
+            comme celui de Szegedy, où elles permettent une recherche plus rapide dans les bases de données non
+            structurées.</p>
 
         <h4>Optimisation :</h4>
-        <p>Les marches quantiques sont également utilisées pour résoudre des problèmes d'optimisation combinatoire, en s'appuyant sur leur convergence rapide vers des états optimaux. Par exemple, l'algorithme QUBO peut être implémenté en tirant parti des avantages des interférences quantiques.</p>
+        <p>Les marches quantiques sont également utilisées pour résoudre des problèmes d'optimisation combinatoire, en
+            s'appuyant sur leur convergence rapide vers des états optimaux. Par exemple, l'algorithme QUBO peut être
+            implémenté en tirant parti des avantages des interférences quantiques.</p>
 
         <h3>Implications théoriques et pratiques</h3>
-        <p>Théoriquement, les marches quantiques montrent que les principes fondamentaux de la mécanique quantique, comme la superposition et l’interférence, peuvent offrir des avantages computationnels significatifs. Pratiquement, elles révolutionnent des domaines comme la chimie quantique, où elles aident à simuler des systèmes complexes, ou les sciences des données, où elles améliorent des tâches de recherche et d'optimisation.</p>
-        <p>Cependant, leur impact est actuellement limité par les capacités des ordinateurs quantiques disponibles, nécessitant des efforts continus dans la recherche sur les qubits physiques et les algorithmes quantiques. Cela souligne l’importance d’investissements dans les technologies quantiques pour exploiter pleinement le potentiel.</p>
+        <p>Théoriquement, les marches quantiques montrent que les principes fondamentaux de la mécanique quantique,
+            comme la superposition et l’interférence, peuvent offrir des avantages computationnels significatifs.
+            Pratiquement, elles révolutionnent des domaines comme la chimie quantique, où elles aident à simuler des
+            systèmes complexes, ou les sciences des données, où elles améliorent des tâches de recherche et
+            d'optimisation.</p>
+        <p>Cependant, leur impact est actuellement limité par les capacités des ordinateurs quantiques disponibles,
+            nécessitant des efforts continus dans la recherche sur les qubits physiques et les algorithmes quantiques.
+            Cela souligne l’importance d’investissements dans les technologies quantiques pour exploiter pleinement le
+            potentiel.</p>
     </section>
 
     <section id="section6">
         <h2>VI. Conclusion</h2>
 
         <h3>Synthèse des concepts abordés</h3>
-        <p>Les marches aléatoires, qu'elles soient classiques ou quantiques, sont des outils fondamentaux pour modéliser des systèmes dynamiques et résoudre des problèmes complexes. Les marches classiques, bien établies, servent des applications allant de la finance à la biologie. Les marches quantiques, en revanche, tirent parti des propriétés uniques de la mécanique quantique, comme la superposition et l'interférence, pour explorer de nouveaux paradigmes de calcul. Leur capacité à accélérer la recherche dans des graphes, à améliorer les performances des algorithmes et à ouvrir la voie à des applications en physique et informatique quantique en fait un sujet de recherche prometteur.</p>
+        <p>Les marches aléatoires, qu'elles soient classiques ou quantiques, sont des outils fondamentaux pour modéliser
+            des systèmes dynamiques et résoudre des problèmes complexes. Les marches classiques, bien établies, servent
+            des applications allant de la finance à la biologie. Les marches quantiques, en revanche, tirent parti des
+            propriétés uniques de la mécanique quantique, comme la superposition et l'interférence, pour explorer de
+            nouveaux paradigmes de calcul. Leur capacité à accélérer la recherche dans des graphes, à améliorer les
+            performances des algorithmes et à ouvrir la voie à des applications en physique et informatique quantique en
+            fait un sujet de recherche prometteur.</p>
 
         <h3>Perspectives des marches aléatoires et quantiques</h3>
         <h4>Avancées en algorithmes quantiques :</h4>
-        <p>L'intégration des marches quantiques dans des algorithmes plus complexes, comme les méthodes hybrides combinant classique et quantique, pourrait élargir leur champ d'application. Par exemple, des améliorations dans les algorithmes de recherche et d'optimisation pourraient révolutionner des secteurs tels que la logistique et l'intelligence artificielle.</p>
+        <p>L'intégration des marches quantiques dans des algorithmes plus complexes, comme les méthodes hybrides
+            combinant classique et quantique, pourrait élargir leur champ d'application. Par exemple, des améliorations
+            dans les algorithmes de recherche et d'optimisation pourraient révolutionner des secteurs tels que la
+            logistique et l'intelligence artificielle.</p>
 
         <h4>Développement matériel :</h4>
-        <p>Les progrès dans la fabrication des ordinateurs quantiques, notamment la réduction des erreurs et l'augmentation du nombre de qubits, seront cruciaux pour exploiter pleinement le potentiel des marches quantiques. Par exemple, les avancées des entreprises comme IBM et Google Quantum AI visent à rendre les marches quantiques utilisables pour des tâches industrielles.</p>
+        <p>Les progrès dans la fabrication des ordinateurs quantiques, notamment la réduction des erreurs et
+            l'augmentation du nombre de qubits, seront cruciaux pour exploiter pleinement le potentiel des marches
+            quantiques. Par exemple, les avancées des entreprises comme IBM et Google Quantum AI visent à rendre les
+            marches quantiques utilisables pour des tâches industrielles.</p>
 
         <h4>Applications interdisciplinaires :</h4>
-        <p>Les marches quantiques pourraient transformer des domaines comme la chimie quantique (simulations moléculaires complexes), les télécommunications (protocoles cryptographiques sécurisés), ou encore la biologie computationnelle (analyse des réseaux biologiques complexes).</p>
+        <p>Les marches quantiques pourraient transformer des domaines comme la chimie quantique (simulations
+            moléculaires complexes), les télécommunications (protocoles cryptographiques sécurisés), ou encore la
+            biologie computationnelle (analyse des réseaux biologiques complexes).</p>
 
         <h3>Importance de la recherche dans ces domaines</h3>
-        <p>Investir dans la recherche sur les marches aléatoires et quantiques est essentiel pour comprendre et exploiter des phénomènes fondamentaux. Cela a des implications pratiques majeures, comme :</p>
+        <p>Investir dans la recherche sur les marches aléatoires et quantiques est essentiel pour comprendre et
+            exploiter des phénomènes fondamentaux. Cela a des implications pratiques majeures, comme :</p>
         <ul>
-            <li>Amélioration des technologies existantes : Meilleures performances des algorithmes classiques et quantiques.</li>
-            <li>Développement de nouvelles industries : Cryptographie quantique, matériaux innovants, et simulations complexes en physique.</li>
-            <li>Avancées fondamentales : Une meilleure compréhension de la mécanique quantique et de ses interactions avec les systèmes complexes.</li>
+            <li>Amélioration des technologies existantes : Meilleures performances des algorithmes classiques et
+                quantiques.</li>
+            <li>Développement de nouvelles industries : Cryptographie quantique, matériaux innovants, et simulations
+                complexes en physique.</li>
+            <li>Avancées fondamentales : Une meilleure compréhension de la mécanique quantique et de ses interactions
+                avec les systèmes complexes.</li>
         </ul>
 
-        <p>Les marches aléatoires quantiques, bien que naissantes, symbolisent un tournant dans l'exploration scientifique et technologique, avec un impact potentiel sur des problématiques globales comme l'optimisation énergétique et la gestion des données massives. La collaboration entre théoriciens, ingénieurs, et entreprises sera décisive pour transformer ces promesses en réalité.</p>
+        <p>Les marches aléatoires quantiques, bien que naissantes, symbolisent un tournant dans l'exploration
+            scientifique et technologique, avec un impact potentiel sur des problématiques globales comme l'optimisation
+            énergétique et la gestion des données massives. La collaboration entre théoriciens, ingénieurs, et
+            entreprises sera décisive pour transformer ces promesses en réalité.</p>
     </section>
 
     <section id="section7">
@@ -265,17 +409,29 @@
 
         <h3>Marche aléatoire classique :</h3>
         <ul>
-            <li><a href="https://fr.statisticseasily.com/glossaire/qu%27est-ce-que-la-marche-al%C3%A9atoire/">https://fr.statisticseasily.com/glossaire/qu'est-ce-que-la-marche-aléatoire/</a></li>
-            <li><a href="https://www.techno-science.net/glossaire-definition/Marche-aleatoire.html">https://www.techno-science.net/glossaire-definition/Marche-aleatoire.html</a></li>
-            <li><a href="https://culturemath.ens.fr/thematiques/superieur/a-propos-de-marches-aleatoires">https://culturemath.ens.fr/thematiques/superieur/a-propos-de-marches-aléatoires</a></li>
-            <li><a href="https://www.bibmath.net/dico/index.php?action=affiche&quoi=./m/marchealea.html">https://www.bibmath.net/dico/index.php?action=affiche&quoi=./m/marchealea.html</a></li>
+            <li><a
+                    href="https://fr.statisticseasily.com/glossaire/qu%27est-ce-que-la-marche-al%C3%A9atoire/">https://fr.statisticseasily.com/glossaire/qu'est-ce-que-la-marche-aléatoire/</a>
+            </li>
+            <li><a
+                    href="https://www.techno-science.net/glossaire-definition/Marche-aleatoire.html">https://www.techno-science.net/glossaire-definition/Marche-aleatoire.html</a>
+            </li>
+            <li><a
+                    href="https://culturemath.ens.fr/thematiques/superieur/a-propos-de-marches-aleatoires">https://culturemath.ens.fr/thematiques/superieur/a-propos-de-marches-aléatoires</a>
+            </li>
+            <li><a
+                    href="https://www.bibmath.net/dico/index.php?action=affiche&quoi=./m/marchealea.html">https://www.bibmath.net/dico/index.php?action=affiche&quoi=./m/marchealea.html</a>
+            </li>
         </ul>
 
         <h3>Modèle mathématique :</h3>
         <ul>
             <li><a href="https://verga.cpt.univ-mrs.fr/L3-phys.html">https://verga.cpt.univ-mrs.fr/L3-phys.html</a></li>
-            <li><a href="https://www.studysmarter.fr/resumes/mathematiques/statistiques-et-probabilites/marche-aleatoire/">https://www.studysmarter.fr/resumes/mathematiques/statistiques-et-probabilites/marche-aleatoire/</a></li>
-            <li><a href="https://www.lptms.universite-paris-saclay.fr/christophe_texier/files/2012/06/coursic_Alain_Comtet.pdf">https://www.lptms.universite-paris-saclay.fr/christophe_texier/files/2012/06/coursic_Alain_Comtet.pdf</a></li>
+            <li><a
+                    href="https://www.studysmarter.fr/resumes/mathematiques/statistiques-et-probabilites/marche-aleatoire/">https://www.studysmarter.fr/resumes/mathematiques/statistiques-et-probabilites/marche-aleatoire/</a>
+            </li>
+            <li><a
+                    href="https://www.lptms.universite-paris-saclay.fr/christophe_texier/files/2012/06/coursic_Alain_Comtet.pdf">https://www.lptms.universite-paris-saclay.fr/christophe_texier/files/2012/06/coursic_Alain_Comtet.pdf</a>
+            </li>
         </ul>
 
         <h3>Distribution de probabilité :</h3>
@@ -288,9 +444,49 @@
 
         <h3>Comparaison modèle classique et quantique :</h3>
         <ul>
-            <li><a href="https://pages.cs.wisc.edu/~dieter/Courses/2022s-CS710/Scribes/scribe12.pdf">https://pages.cs.wisc.edu/~dieter/Courses/2022s-CS710/Scribes/scribe12.pdf</a></li>
-            <li><a href="https://www.diva-portal.org/smash/get/diva2:1840611/FULLTEXT01.pdf">https://www.diva-portal.org/smash/get/diva2:1840611/FULLTEXT01.pdf</a></li>
+            <li><a
+                    href="https://pages.cs.wisc.edu/~dieter/Courses/2022s-CS710/Scribes/scribe12.pdf">https://pages.cs.wisc.edu/~dieter/Courses/2022s-CS710/Scribes/scribe12.pdf</a>
+            </li>
+            <li><a
+                    href="https://www.diva-portal.org/smash/get/diva2:1840611/FULLTEXT01.pdf">https://www.diva-portal.org/smash/get/diva2:1840611/FULLTEXT01.pdf</a>
+            </li>
         </ul>
     </section>
+
+    <section id="section8">
+        <h2>Tests de marche aléatoire</h2>
+
+        <div class="test-classic">
+            <h3>Test de la marche aléatoire classique</h3>
+            <p>Utilisez le bouton ci-dessous pour tester une marche aléatoire classique en Python.</p>
+            <button onclick="window.location.href='/random_walk?type=classic'">Tester la marche aléatoire</button>
+        </div>
+
+        <div class="test-quantum">
+            <h3>Test de la marche aléatoire quantique</h3>
+            <p>Utilisez le bouton ci-dessous pour tester une marche aléatoire quantique.</p>
+            <button onclick="window.location.href='/random_walk?type=quantum'">Tester la marche aléatoire
+                quantique</button>
+        </div>
+    </section>
 </div>
+
+<script>
+    // Fonction pour afficher ou masquer la section team-info
+    function toggleTeamInfo() {
+        const teamInfo = document.getElementById('team-info');
+        const sections = ['#section1', '#section2', '#section3', '#section4', '#section5', '#section6', '#section7', '#section8'];
+
+        // Vérifie si l'URL ne contient pas de fragment correspondant aux sections
+        const currentHash = window.location.hash;
+        const isAnySectionVisible = sections.includes(currentHash);
+
+        // Affiche ou masque la section team-info
+        teamInfo.style.display = isAnySectionVisible ? 'none' : 'block';
+    }
+
+    // Écoute les changements de l'URL pour détecter les sections sélectionnées
+    window.addEventListener('hashchange', toggleTeamInfo);
+    window.addEventListener('load', toggleTeamInfo); // Pour gérer le chargement initial
+</script>
 {% endblock %}

@@ -577,3 +577,20 @@ section {
 section:target {
     display: block;
 }
+
+.resized-image {
+    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur de son conteneur */
+    height: auto; /* Maintient le ratio d'aspect de l'image */
+}
+
+.team-info {
+    text-align: center; /* Centre le texte et l'image */
+    margin-top: 20px;
+}
+
+.team-image {
+    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur de son conteneur */
+    height: auto; /* Maintient le ratio d'aspect de l'image */
+    border-radius: 10px; /* Ajoute des coins arrondis à l'image */
+    margin-top: 10px; /* Ajoute un espace au-dessus de l'image */
+}

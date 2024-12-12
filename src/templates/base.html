@@ -10,7 +10,7 @@
     {% block head %}{% endblock %}
 </head>
 <body data-page="{{ request.endpoint }}">
-    {% if request.endpoint not in ['index', 'quantum_walk', 'quantum_art'] %}
+    {% if request.endpoint not in ['index', 'quantum_walk', 'quantum_art', 'random_walk'] %}
     <h1>Quantum Emulator</h1>
     <nav>
         <a href="/quantum_emulator">Home</a>
