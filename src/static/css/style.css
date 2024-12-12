@@ -594,3 +594,8 @@ section:target {
     border-radius: 10px; /* Ajoute des coins arrondis à l'image */
     margin-top: 10px; /* Ajoute un espace au-dessus de l'image */
 }
+
+/* Justification des paragraphes */
+p {
+    text-align: justify; /* Justifie le texte dans tous les paragraphes */
+}
