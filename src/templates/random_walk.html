@@ -3,7 +3,7 @@
 {% block content %}
 <a href="/quantum_walk#section1" class="back-button" title="Retour au menu principal">
     <svg viewBox="0 0 24 24">
-        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
     </svg>
 </a>
 
@@ -14,23 +14,27 @@
         <div class="form-group">
             <label for="walkType">Type de Marche :</label>
             <select id="walkType" name="type">
-                <option value="classic" {% if request.args.get('type') == 'classic' %}selected{% endif %}>Classique</option>
-                <option value="quantum" {% if request.args.get('type') == 'quantum' %}selected{% endif %}>Quantique</option>
+                <option value="classic" {% if request.args.get('type')=='classic' %}selected{% endif %}>Classique
+                </option>
+                <option value="quantum" {% if request.args.get('type')=='quantum' %}selected{% endif %}>Quantique
+                </option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="movementType">Type de Mouvement :</label>
             <select id="movementType" name="movement">
-                <option value="linear" {% if request.args.get('movement') == 'linear' %}selected{% endif %}>Linéaire</option>
-                <option value="2d" {% if request.args.get('movement') == '2d' %}selected{% endif %}>2D</option>
-                <option value="3d" {% if request.args.get('movement') == '3d' %}selected{% endif %}>3D</option>
+                <option value="linear" {% if request.args.get('movement')=='linear' %}selected{% endif %}>Linéaire
+                </option>
+                <option value="2d" {% if request.args.get('movement')=='2d' %}selected{% endif %}>2D</option>
+                <option value="3d" {% if request.args.get('movement')=='3d' %}selected{% endif %}>3D</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="iterations">Nombre d'Itérations :</label>
-            <input type="number" id="iterations" name="iterations" min="1" max="100" value="{{ request.args.get('iterations', 10)}}" onchange="updateSteps()">
+            <input type="number" id="iterations" name="iterations" min="1" max="100"
+                value="{{ request.args.get('iterations', 10)}}" onchange="updateSteps()">
         </div>
 
         <button type="submit" class="submit-button">Générer</button>
@@ -196,6 +200,231 @@
         }
     }
 
+    function randomWalkQuantum(steps) {
+        let position1 = 0;
+        let position2 = 0;
+        const pathQuantum1 = [position1];
+        const pathQuantum2 = [position2];
+
+        for (let i = 0; i < steps; i++) {
+            position1 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la première marche
+            position2 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la deuxième marche
+            pathQuantum1.push(position1);
+            pathQuantum2.push(position2);
+        }
+        drawWalkQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    }
+
+    function randomWalk2DQuantum(steps) {
+        let position1 = { x: 0, y: 0 };
+        let position2 = { x: 0, y: 0 };
+        const pathQuantum1 = [{ ...position1 }];
+        const pathQuantum2 = [{ ...position2 }];
+
+        for (let i = 0; i < steps; i++) {
+            const direction1 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+            const direction2 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+
+            // Déplacement pour la première marche
+            switch (direction1) {
+                case 0: position1.y += 1; break; // haut
+                case 1: position1.y -= 1; break; // bas
+                case 2: position1.x -= 1; break; // gauche
+                case 3: position1.x += 1; break; // droite
+            }
+            pathQuantum1.push({ ...position1 });
+
+            // Déplacement pour la deuxième marche
+            switch (direction2) {
+                case 0: position2.y += 1; break; // haut
+                case 1: position2.y -= 1; break; // bas
+                case 2: position2.x -= 1; break; // gauche
+                case 3: position2.x += 1; break; // droite
+            }
+            pathQuantum2.push({ ...position2 });
+        }
+        drawWalk2DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    }
+
+    function randomWalk3DQuantum(steps) {
+        let position1 = { x: 0, y: 0, z: 0 };
+        let position2 = { x: 0, y: 0, z: 0 };
+        const pathQuantum1 = [{ ...position1 }];
+        const pathQuantum2 = [{ ...position2 }];
+
+        for (let i = 0; i < steps; i++) {
+            const direction1 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+            const direction2 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+
+            // Déplacement pour la première marche
+            switch (direction1) {
+                case 0: position1.x += 1; break; // droite
+                case 1: position1.x -= 1; break; // gauche
+                case 2: position1.y += 1; break; // haut
+                case 3: position1.y -= 1; break; // bas
+                case 4: position1.z += 1; break; // avant
+                case 5: position1.z -= 1; break; // arrière
+            }
+            pathQuantum1.push({ ...position1 });
+
+            // Déplacement pour la deuxième marche
+            switch (direction2) {
+                case 0: position2.x += 1; break; // droite
+                case 1: position2.x -= 1; break; // gauche
+                case 2: position2.y += 1; break; // haut
+                case 3: position2.y -= 1; break; // bas
+                case 4: position2.z += 1; break; // avant
+                case 5: position2.z -= 1; break; // arrière
+            }
+            pathQuantum2.push({ ...position2 });
+        }
+        drawWalk3DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    }
+
+    function drawWalkQuantum(path1, path2, title1, title2) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la première marche quantique
+        ctx.beginPath();
+        ctx.moveTo(0, 200); // Position de départ
+
+        for (let i = 0; i < path1.length; i++) {
+            ctx.lineTo(i * (800 / path1.length), 200 - path1[i] * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+        ctx.fillText(title1, 10, 20);
+
+        // Dessiner la deuxième marche quantique
+        ctx.beginPath();
+        ctx.moveTo(0, 200); // Position de départ
+
+        for (let i = 0; i < path2.length; i++) {
+            ctx.lineTo(i * (800 / path2.length), 200 - path2[i] * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+        ctx.fillText(title2, 10, 40);
+    }
+
+    function drawWalk2DQuantum(path1, path2, title1, title2) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la première marche quantique en 2D
+        ctx.beginPath();
+        ctx.moveTo(400, 200); // Position de départ
+
+        for (let i = 0; i < path1.length; i++) {
+            ctx.lineTo(400 + path1[i].x * 20, 200 - path1[i].y * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+        ctx.fillText(title1, 10, 20);
+
+        // Dessiner la deuxième marche quantique en 2D
+        ctx.beginPath();
+        ctx.moveTo(400, 200); // Position de départ
+
+        for (let i = 0; i < path2.length; i++) {
+            ctx.lineTo(400 + path2[i].x * 20, 200 - path2[i].y * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'orange';
+        ctx.stroke();
+        ctx.fillText(title2, 10, 40);
+    }
+
+    function drawWalk3DQuantum(path1, path2, title1, title2) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Afficher les titres
+        ctx.fillText(title1, 10, 20);
+        ctx.fillText(title2, 10, 40);
+
+        // Définir les dimensions du cube
+        const cubeSize = 100;
+        const offsetX = ctx.canvas.width / 2;
+        const offsetY = ctx.canvas.height / 2;
+
+        // Dessiner le cube
+        ctx.strokeStyle = '#ccc';
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
+        ctx.stroke();
+
+        // Dessiner la marche quantique en 3D
+        for (let i = 0; i < path1.length; i++) {
+            const x = offsetX + path1[i].x * 10; // Ajuster l'échelle
+            const y = offsetY - path1[i].y * 10; // Ajuster l'échelle
+            const z = path1[i].z; // Utiliser z pour la profondeur
+
+            // Projeter les coordonnées 3D sur le canevas 2D
+            const projectedX = x + (z * 5); // Projection en fonction de z
+            const projectedY = y - (z * 5); // Projection en fonction de z
+
+            // Déterminer la couleur en fonction de la profondeur
+            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+            ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
+
+            // Dessiner le point
+            ctx.beginPath();
+            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+            ctx.fill();
+        }
+
+        // Dessiner la deuxième marche quantique en 3D
+        for (let i = 0; i < path2.length; i++) {
+            const x = offsetX + path2[i].x * 10; // Ajuster l'échelle
+            const y = offsetY - path2[i].y * 10; // Ajuster l'échelle
+            const z = path2[i].z; // Utiliser z pour la profondeur
+
+            // Projeter les coordonnées 3D sur le canevas 2D
+            const projectedX = x + (z * 5); // Projection en fonction de z
+            const projectedY = y - (z * 5); // Projection en fonction de z
+
+            // Déterminer la couleur en fonction de la profondeur
+            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+            ctx.fillStyle = `rgba(255, 0, 0, ${alpha})`; // Couleur rouge avec transparence
+
+            // Dessiner le point
+            ctx.beginPath();
+            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+            ctx.fill();
+        }
+    }
+
     const walkType = document.getElementById('walkType');
     const movementType = document.getElementById('movementType');
 
@@ -207,6 +436,18 @@
         if (selectedWalkType === 'classic') {
             randomWalkClassic(steps);
             document.getElementById('resultText').innerText = "Marche Aléatoire Classique générée.";
+
+            // Ne pas appeler le mouvement 2D si le mouvement 3D est sélectionné
+            if (selectedMovementType === 'linear') {
+                randomWalkClassic(steps);
+                document.getElementById('resultText').innerText = "Marche Aléatoire Linéaire générée.";
+            } else if (selectedMovementType === '2d') {
+                randomWalk2D(steps);
+                document.getElementById('resultText').innerText = "Marche Aléatoire en 2D générée.";
+            } else if (selectedMovementType === '3d') {
+                randomWalk3D(steps);
+                document.getElementById('resultText').innerText = "Marche Aléatoire en 3D générée.";
+            }
         } else if (selectedWalkType === 'quantum') {
             // Appel à l'API pour mesurer la probabilité
             fetch('/measure_probability')
@@ -214,24 +455,21 @@
                 .then(data => {
                     document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + data.probabilities.join(", ");
                     document.getElementById('resultText').innerText = "Marche Aléatoire Quantique générée.";
-                });
-        }
 
-        // Ne pas appeler le mouvement 2D si le mouvement 3D est sélectionné
-        if (selectedMovementType === 'linear') {
-            randomWalkClassic(steps);
-            document.getElementById('resultText').innerText = "Marche Aléatoire Linéaire générée.";
-        } else if (selectedMovementType === '2d') {
-            randomWalk2D(steps);
-            document.getElementById('resultText').innerText = "Marche Aléatoire en 2D générée.";
-        } else if (selectedMovementType === '3d') {
-            randomWalk3D(steps);
-            document.getElementById('resultText').innerText = "Marche Aléatoire en 3D générée.";
+                    // Dessiner deux marches quantiques
+                    if (selectedMovementType === 'linear') {
+                        randomWalkQuantum(steps);
+                    } else if (selectedMovementType === '2d') {
+                        randomWalk2DQuantum(steps);
+                    } else if (selectedMovementType === '3d') {
+                        randomWalk3DQuantum(steps);
+                    }
+                });
         }
     }
 
     // Appel de la fonction de génération lors de la soumission du formulaire
-    document.querySelector('.walk-form').addEventListener('submit', function(event) {
+    document.querySelector('.walk-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Empêche le rechargement de la page
         generateWalk();
     });
@@ -265,7 +503,8 @@
         margin-bottom: 5px;
     }
 
-    select, input[type="number"] {
+    select,
+    input[type="number"] {
         padding: 8px;
         border: 1px solid #ddd;
         border-radius: 4px;
@@ -303,4 +542,4 @@
         color: #2c3e50;
     }
 </style>
-{% endblock %} 
+{% endblock %}
