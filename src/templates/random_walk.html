@@ -18,6 +18,10 @@
                 </option>
                 <option value="quantum" {% if request.args.get('type')=='quantum' %}selected{% endif %}>Quantique
                 </option>
+                <option value="qiskit" {% if request.args.get('type')=='qiskit' %}selected{% endif %}>Qiskit
+                </option>
+                <option value="ibm" {% if request.args.get('type')=='ibm' %}selected{% endif %}>IBM
+                </option>
             </select>
         </div>
 
@@ -464,6 +468,22 @@
                     } else if (selectedMovementType === '3d') {
                         randomWalk3DQuantum(steps);
                     }
+                });
+        } else if (selectedWalkType === 'qiskit') {
+            // Appeler le fichier Qiskit pour mesurer la probabilité
+            fetch('/run_qiskit')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + JSON.stringify(data.probabilities);
+                    document.getElementById('resultText').innerText = "Marche Aléatoire Qiskit générée.";
+                });
+        } else if (selectedWalkType === 'ibm') {
+            // Appeler le fichier IBM pour exécuter le circuit
+            fetch('/run_ibm')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResults').innerText = "Résultats: " + JSON.stringify(data.results);
+                    document.getElementById('resultText').innerText = "Marche Aléatoire IBM générée.";
                 });
         }
     }

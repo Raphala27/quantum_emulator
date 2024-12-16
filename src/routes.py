@@ -4,6 +4,7 @@ from src.emulator import measure_probabilities
 from src.circuits import run_grover, run_deutsch_jozsa
 from src.algorithms import solve_qubo
 import numpy as np
+# from src.qiskit import measure_probability
 
 app = Flask(__name__)
 
@@ -120,3 +121,13 @@ def register_routes(app):
         state = np.array([1, 0])  # Exemple d'état quantique
         probabilities = np.abs(state) ** 2  # Calcul des probabilités
         return jsonify(probabilities=probabilities.tolist())
+
+    # @app.route('/run_qiskit')
+    # def run_qiskit():
+    #     probabilities = measure_probability()
+    #     return jsonify(probabilities)
+
+    # @app.route('/run_ibm')
+    # def run_ibm():
+    #     results = ibm_quantum_call.run_on_ibm()
+    #     return jsonify(results)
