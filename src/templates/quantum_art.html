@@ -6,183 +6,1171 @@
         <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
     </svg>
 </a>
-
 <div class="quantum-art-container">
     <h1>Art Quantique</h1>
-    
-    <section class="art-intro">
-        <h2>Créez de l'Art avec la Physique Quantique</h2>
-        <p>Explorez la beauté des phénomènes quantiques à travers des visualisations artistiques générées par des simulations quantiques.</p>
-    </section>
 
-    <div class="art-workspace">
-        <section class="art-controls">
-            <div class="control-panel">
-                <h3>Paramètres de Génération</h3>
-                
-                <div class="control-group">
-                    <label for="art-type">Type d'Art</label>
-                    <select id="art-type">
-                        <option value="interference">Motifs d'Interférence</option>
-                        <option value="entanglement">Visualisation d'Intrication</option>
-                        <option value="superposition">Superposition d'États</option>
-                        <option value="random">Aléatoire Quantique</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="color-scheme">Palette de Couleurs</label>
-                    <select id="color-scheme">
-                        <option value="quantum">Quantum Blue</option>
-                        <option value="rainbow">Arc-en-ciel Quantique</option>
-                        <option value="monochrome">Monochrome</option>
-                        <option value="neon">Néon</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="complexity">Complexité</label>
-                    <input type="range" id="complexity" min="1" max="10" value="5">
-                    <span class="complexity-value">5</span>
-                </div>
-
-                <div class="control-group">
-                    <label for="iterations">Nombre d'Itérations</label>
-                    <input type="range" id="iterations" min="100" max="1000" step="100" value="500">
-                    <span class="iterations-value">500</span>
-                </div>
-
-                <button id="generate-art" class="quantum-button">Générer</button>
-                <button id="download-art" class="quantum-button secondary">Télécharger</button>
-            </div>
-        </section>
-
-        <section class="art-display">
-            <div class="canvas-container">
-                <canvas id="quantum-canvas"></canvas>
-                <div class="loading-overlay hidden">
-                    <div class="spinner"></div>
-                    <p>Génération en cours...</p>
-                </div>
-            </div>
-        </section>
+      
+      <div id="circuit-builder">
+        <h2>Quantum Circuit Builder</h2>
+        <div id="qubit-controls">
+            <button id="add-qubit">+ Add Qubit</button>
+        </div>
+        <div id="circuit-area"></div>
+        <div id="gate-palette">
+            <div class="gate" draggable="true" data-gate-type="H">H</div>
+            <div class="gate" draggable="true" data-gate-type="CNOT">CNOT</div>
+            <div class="gate" draggable="true" data-gate-type="X">X</div>
+            <div class="gate" draggable="true" data-gate-type="Y">Y</div>
+            <div class="gate" draggable="true" data-gate-type="Z">Z</div>
+            <div class="gate" draggable="true" data-gate-type="I">I</div>
+            <div class="gate" draggable="true" data-gate-type="S">S</div>
+            <div class="gate" draggable="true" data-gate-type="T">T</div>
+        </div>
+    </div>
+    <button id="run-circuit">Run Circuit</button>
+    <div id="results">
+        <canvas id="resultsChart"></canvas>
+    </div>
     </div>
 
-    <section class="art-gallery">
-        <h2>Galerie d'Art Quantique</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="{{ url_for('static', filename='images/quantum-art-1.jpg') }}" alt="Art Quantique 1">
-                <div class="gallery-item-info">
-                    <h4>Interférence Quantique</h4>
-                    <p>Visualisation des motifs d'interférence d'ondes quantiques</p>
-                </div>
+    <div class="random-walk-container">
+        <h2>Random Walk Simulation</h2>
+    
+        <form method="get" action="/random_walk" class="walk-form">
+            <div class="form-group">
+                <label for="walkType">Type de Marche :</label>
+                <select id="walkType" name="type">
+                    <option value="classic" {% if request.args.get('type')=='classic' %}selected{% endif %}>Classique
+                    </option>
+                    <option value="quantum" {% if request.args.get('type')=='quantum' %}selected{% endif %}>Quantique
+                    </option>
+                    <option value="qiskit" {% if request.args.get('type')=='qiskit' %}selected{% endif %}>Qiskit
+                    </option>
+                    <option value="ibm" {% if request.args.get('type')=='ibm' %}selected{% endif %}>IBM
+                    </option>
+                </select>
             </div>
-            <div class="gallery-item">
-                <img src="{{ url_for('static', filename='images/quantum-art-2.jpg') }}" alt="Art Quantique 2">
-                <div class="gallery-item-info">
-                    <h4>Intrication</h4>
-                    <p>Représentation artistique de particules intriquées</p>
-                </div>
+    
+            <div class="form-group">
+                <label for="movementType">Type de Mouvement :</label>
+                <select id="movementType" name="movement">
+                    <option value="linear" {% if request.args.get('movement')=='linear' %}selected{% endif %}>Linéaire
+                    </option>
+                    <option value="2d" {% if request.args.get('movement')=='2d' %}selected{% endif %}>2D</option>
+                    <option value="3d" {% if request.args.get('movement')=='3d' %}selected{% endif %}>3D</option>
+                </select>
             </div>
-            <div class="gallery-item">
-                <img src="{{ url_for('static', filename='images/quantum-art-3.jpg') }}" alt="Art Quantique 3">
-                <div class="gallery-item-info">
-                    <h4>Superposition</h4>
-                    <p>États quantiques superposés</p>
-                </div>
+    
+            <div class="form-group">
+                <label for="iterations">Nombre d'Itérations :</label>
+                <input type="number" id="iterations" name="iterations" min="1" max="100"
+                    value="{{ request.args.get('iterations', 10)}}" onchange="updateSteps()">
             </div>
+    
+            <button type="submit" class="submit-button">Générer</button>
+        </form>
+    
+        <canvas id="walkCanvas" width="800" height="400"></canvas>
+    
+        <div id="results" class="results-container">
+            <h2>Résultats</h2>
+            <p id="resultText">Sélectionnez les options et cliquez sur "Générer".</p>
+            <p id="quantumResults"></p>
         </div>
-    </section>
-</div>
+    </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('quantum-canvas');
-    const ctx = canvas.getContext('2d');
-    const generateBtn = document.getElementById('generate-art');
-    const downloadBtn = document.getElementById('download-art');
-    const complexityInput = document.getElementById('complexity');
-    const iterationsInput = document.getElementById('iterations');
-    const complexityValue = document.querySelector('.complexity-value');
-    const iterationsValue = document.querySelector('.iterations-value');
+    <div id="music-visualization">
+        <h2>Piano Roll</h2>
+        <canvas id="piano-roll" width="800" height="400" style="border: 1px solid #ccc;"></canvas>
+    </div>
+  
+      <div id="playback-controls">
+        <h2>Playback</h2>
+        <button id="play-music">Play Music</button>
+        <button id="stop-music">Stop Music</button>
+      </div>
 
-    // Mettre à jour les valeurs affichées
-    complexityInput.addEventListener('input', function() {
-        complexityValue.textContent = this.value;
+    <!-- <div id="music-mapping">
+      <h2>Map Results to Music</h2>
+      <form id="music-mapping-form">
+        <label for="scale">Choose a Scale:</label>
+        <select id="scale" name="scale">
+          <option value="major">Major</option>
+          <option value="minor">Minor</option>
+        </select>
+        <label for="base-note">Base Note:</label>
+        <input type="text" id="base-note" name="base-note" placeholder="e.g., C4" required>
+        <button type="submit">Map to Music</button>
+      </form>
+    </div>
+
+    <div id="results">
+      <h2>Generated Music</h2>
+      <div id="music-visualization">
+        <p>Music visualization will appear here.</p>
+      </div>
+      <button id="play-music">Play Music</button>
+      <button id="download-music">Download MIDI</button>
+    </div> -->
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.42/Tone.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize the circuit builder interface
+      initializeCircuitBuilder();
+
+      // Handle form submissions and interactions
+      document.getElementById('random-walk-form').addEventListener('submit', handleRandomWalkSubmit);
+      document.getElementById('music-mapping-form').addEventListener('submit', handleMusicMappingSubmit);
+      document.getElementById('play-music').addEventListener('click', playGeneratedMusic);
+      document.getElementById('download-music').addEventListener('click', downloadMIDI);
     });
 
-    iterationsInput.addEventListener('input', function() {
-        iterationsValue.textContent = this.value;
-    });
-
-    // Ajuster la taille du canvas
-    function resizeCanvas() {
-        const container = canvas.parentElement;
-        canvas.width = container.clientWidth;
-        canvas.height = container.clientHeight;
+    function initializeCircuitBuilder() {
+      const circuitUI = document.getElementById('circuit-ui');
+      circuitUI.innerHTML = '<p>Drag and drop gates here to create your quantum circuit.</p>';
+      // Additional logic for drag-and-drop interface can be implemented here
     }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    function handleRandomWalkSubmit(event) {
+      event.preventDefault();
+      const steps = document.getElementById('steps').value;
+      console.log(`Random Walk Steps: ${steps}`);
+      // Send the steps data to the backend or process further
+    }
 
-    // Génération d'art
-    generateBtn.addEventListener('click', function() {
-        const artType = document.getElementById('art-type').value;
-        const colorScheme = document.getElementById('color-scheme').value;
-        const complexity = parseInt(complexityInput.value);
-        const iterations = parseInt(iterationsInput.value);
+    function handleMusicMappingSubmit(event) {
+      event.preventDefault();
+      const scale = document.getElementById('scale').value;
+      const baseNote = document.getElementById('base-note').value;
+      console.log(`Scale: ${scale}, Base Note: ${baseNote}`);
+      // Send the mapping configuration to the backend or process further
+    }
 
-        // Afficher le loading
-        document.querySelector('.loading-overlay').classList.remove('hidden');
+    function playGeneratedMusic() {
+      console.log('Playing generated music...');
+      // Logic to play generated music
+    }
 
-        // Simuler la génération (à remplacer par votre véritable logique)
-        setTimeout(() => {
-            generateQuantumArt(artType, colorScheme, complexity, iterations);
-            document.querySelector('.loading-overlay').classList.add('hidden');
-        }, 1000);
+    function downloadMIDI() {
+      console.log('Downloading MIDI file...');
+      // Logic to generate and download a MIDI file
+    }
+
+
+    // ##################### part quantum emulator #########################################
+
+
+    const circuitArea = document.getElementById('circuit-area');
+    const addQubitBtn = document.getElementById('add-qubit');
+    const gatePalette = document.getElementById('gate-palette');
+    const runCircuitBtn = document.getElementById('run-circuit');
+    const resultsDiv = document.getElementById('results');
+    let qubitCount = 0;
+    let svg;
+
+    addQubitBtn.addEventListener('click', addQubit);
+
+    function addQubit() {
+        const qubitLine = document.createElement('div');
+        qubitLine.className = 'qubit-line';
+        qubitLine.innerHTML = `
+            <div class="qubit-label">
+                <button class="delete-qubit">×</button>
+                <span>q${qubitCount}</span>
+            </div>
+            <div class="qubit-wire"></div>
+        `;
+        circuitArea.appendChild(qubitLine);
+        qubitCount++;
+
+        qubitLine.querySelector('.qubit-wire').addEventListener('dragover', allowDrop);
+        qubitLine.querySelector('.qubit-wire').addEventListener('drop', drop);
+        
+        qubitLine.querySelector('.delete-qubit').addEventListener('click', deleteQubitLine);
+
+        if (!svg) {
+            svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.pointerEvents = 'none';
+            circuitArea.appendChild(svg);
+        }
+    }
+
+    function deleteQubitLine(event) {
+        const qubitLine = event.target.closest('.qubit-line');
+        const qubitIndex = Array.from(circuitArea.children).indexOf(qubitLine);
+
+        // Remove any CNOT connections to this qubit
+        svg.querySelectorAll('line').forEach(line => {
+            const controlIndex = parseInt(line.getAttribute('data-control'));
+            const targetIndex = parseInt(line.getAttribute('data-target'));
+            if (controlIndex === qubitIndex || targetIndex === qubitIndex) {
+                removeCNOTConnection(line);
+            }
+        });
+
+        circuitArea.removeChild(qubitLine);
+        qubitCount--;
+        updateQubitLabels();
+    }
+
+    function updateQubitLabels() {
+        circuitArea.querySelectorAll('.qubit-line').forEach((line, index) => {
+            line.querySelector('.qubit-label span').textContent = `q${index}`;
+        });
+    }
+
+    gatePalette.querySelectorAll('.gate').forEach(gate => {
+        gate.addEventListener('dragstart', drag);
     });
 
-    // Fonction de génération d'art (exemple simple)
-    function generateQuantumArt(type, colors, complexity, iterations) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function drag(ev) {
+        ev.dataTransfer.setData("text/plain", ev.target.getAttribute('data-gate-type'));
+    }
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        const gateType = ev.dataTransfer.getData("text/plain");
+        const gateElement = document.createElement('div');
+        gateElement.className = 'gate';
+        gateElement.textContent = gateType;
+        gateElement.setAttribute('data-gate-type', gateType);
         
-        // Exemple simple de génération de motifs
-        for (let i = 0; i < iterations; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            const size = Math.random() * complexity * 2;
+        gateElement.addEventListener('dblclick', deleteGate);
+        
+        // Find the first empty spot in the qubit wire
+        let insertPosition = ev.target;
+        while (insertPosition.nextElementSibling && 
+               insertPosition.nextElementSibling.classList.contains('gate')) {
+            insertPosition = insertPosition.nextElementSibling;
+        }
+        
+        // Insert the new gate after the last existing gate (or at the start if no gates)
+        if (insertPosition.nextElementSibling) {
+            ev.target.insertBefore(gateElement, insertPosition.nextElementSibling);
+        } else {
+            ev.target.appendChild(gateElement);
+        }
+        
+        const spacer = document.createElement('div');
+        spacer.className = 'gate-spacer';
+        ev.target.insertBefore(spacer, gateElement.nextSibling);
+
+        if (gateType === 'CNOT') {
+            gateElement.classList.add('cnot-target');
+            gateElement.addEventListener('mousedown', startCNOTConnection);
+        }
+    }
+
+    let activeCNOT = null;
+    let tempLine = null;
+
+    function startCNOTConnection(event) {
+        event.preventDefault();
+        activeCNOT = event.target;
+
+        // Remove existing connection if there is one
+        removeExistingCNOTConnection(activeCNOT);
+
+        tempLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        tempLine.setAttribute('stroke', 'black');
+        tempLine.setAttribute('stroke-width', '2');
+        
+        svg.appendChild(tempLine);
+
+        document.addEventListener('mousemove', updateCNOTConnection);
+        document.addEventListener('mouseup', finishCNOTConnection);
+        
+        document.body.classList.add('no-select');
+    }
+
+    function removeExistingCNOTConnection(cnotGate) {
+        const targetIndex = Array.from(circuitArea.children).indexOf(cnotGate.closest('.qubit-line'));
+        const existingLine = svg.querySelector(`line[data-target="${targetIndex}"]`);
+        if (existingLine) {
+            svg.removeChild(existingLine);
+        }
+        cnotGate.removeAttribute('data-control');
+        cnotGate.removeAttribute('data-target');
+    }
+
+    function updateCNOTConnection(event) {
+        const rect = activeCNOT.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+        const startX = rect.left - svgRect.left + rect.width / 2;
+        const startY = rect.top - svgRect.top;  // Top of the CNOT gate
+        
+        tempLine.setAttribute('x1', startX);
+        tempLine.setAttribute('y1', startY);
+        tempLine.setAttribute('x2', event.clientX - svgRect.left);
+        tempLine.setAttribute('y2', event.clientY - svgRect.top);
+    }
+
+    function finishCNOTConnection(event) {
+        document.removeEventListener('mousemove', updateCNOTConnection);
+        document.removeEventListener('mouseup', finishCNOTConnection);
+
+        const controlQubit = document.elementFromPoint(event.clientX, event.clientY);
+        if (controlQubit && controlQubit.classList.contains('qubit-wire')) {
+            const controlIndex = Array.from(circuitArea.children).indexOf(controlQubit.closest('.qubit-line'));
+            const targetIndex = Array.from(circuitArea.children).indexOf(activeCNOT.closest('.qubit-line'));
             
+            if (controlIndex !== targetIndex) {
+                const controlRect = controlQubit.getBoundingClientRect();
+                const targetRect = activeCNOT.getBoundingClientRect();
+                const svgRect = svg.getBoundingClientRect();
+                
+                const startX = targetRect.left - svgRect.left + targetRect.width / 2;
+                const startY = targetRect.top - svgRect.top + (controlIndex < targetIndex ? 0 : targetRect.height);
+                const endX = startX;
+                const endY = controlRect.top - svgRect.top + controlRect.height / 2;
+                
+                tempLine.setAttribute('x1', startX);
+                tempLine.setAttribute('y1', startY);
+                tempLine.setAttribute('x2', endX);
+                tempLine.setAttribute('y2', endY);
+                
+                tempLine.setAttribute('data-control', controlIndex);
+                tempLine.setAttribute('data-target', targetIndex);
+                
+                activeCNOT.setAttribute('data-control', controlIndex);
+                activeCNOT.setAttribute('data-target', targetIndex);
+            } else {
+                svg.removeChild(tempLine);
+                tempLine = null;
+            }
+        } else {
+            svg.removeChild(tempLine);
+            tempLine = null;
+        }
+
+        activeCNOT = null;
+        document.body.classList.remove('no-select');
+    }
+
+    function deleteGate(event) {
+        const gateElement = event.target;
+        const spacer = gateElement.nextElementSibling;
+        
+        // If it's a CNOT gate, remove its connection
+        if (gateElement.getAttribute('data-gate-type') === 'CNOT') {
+            removeExistingCNOTConnection(gateElement);
+        }
+
+        gateElement.parentNode.removeChild(gateElement);
+        if (spacer && spacer.className === 'gate-spacer') {
+            spacer.parentNode.removeChild(spacer);
+        }
+    }
+
+    function removeCNOTConnection(line) {
+        // Remove the line
+        svg.removeChild(line);
+
+        // Remove the data attributes from the CNOT gate
+        const targetIndex = parseInt(line.getAttribute('data-target'));
+        const targetQubit = circuitArea.children[targetIndex];
+        if (targetQubit) {
+            const cnotGate = targetQubit.querySelector('.gate[data-gate-type="CNOT"]');
+            if (cnotGate) {
+                cnotGate.removeAttribute('data-control');
+                cnotGate.removeAttribute('data-target');
+            }
+        }
+    }
+
+    runCircuitBtn.addEventListener('click', runCircuit);
+
+    let globalResults
+
+    function runCircuit() {
+        const circuit = [];
+        const numQubits = circuitArea.querySelectorAll('.qubit-line').length; // Count the number of qubit lines
+
+        circuitArea.querySelectorAll('.qubit-line').forEach((qubitLine, qubitIndex) => {
+            qubitLine.querySelectorAll('.gate').forEach((gate, gateIndex) => {
+                const gateType = gate.getAttribute('data-gate-type');
+                const gateInfo = {
+                    type: gateType,
+                    qubit: qubitIndex,
+                    position: gateIndex
+                };
+                
+                if (gateType === 'CNOT') {
+                    const controlIndex = parseInt(gate.getAttribute('data-control'));
+                    if (!isNaN(controlIndex)) {
+                        gateInfo.control = controlIndex;
+                        gateInfo.target = qubitIndex;
+                    } else {
+                        console.warn('CNOT gate without control qubit found');
+                        return; // Skip this gate
+                    }
+                }
+                
+                circuit.push(gateInfo);
+            });
+        });
+
+        // Send the circuit data along with the number of qubits
+        fetch('/run_circuit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ circuit: circuit, num_qubits: numQubits }), // Include num_qubits
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayResults(data);
+            globalResults = data;
+            const notes = generateNotesFromQuantumStates(data);
+            console.log('Notes:', notes);
+            visualizeNotes(notes);
+            setupPlayback(notes);
+            console.log('Results:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    let resultsChart;
+
+    function displayResults(data) {
+        console.log('Displaying results:', data);
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+        
+        const labels = data.map(item => item.state);
+        const probabilities = data.map(item => item.probability);
+
+        console.log('Labels:', labels);
+        console.log('Probabilities:', probabilities);
+
+        if (resultsChart) {
+            resultsChart.destroy();
+        }
+
+        resultsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Probability',
+                    data: probabilities,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Quantum State Probabilities'
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    // ##################### end quantum emulator #########################################
+
+
+    // ##################### part quantum random walk #########################################
+
+    let steps = parseInt(document.getElementById('iterations').value); // Nombre d'étapes
+    let pathClassic = [];
+    let path2D = [];
+    let path3D = [];
+
+    function randomWalkClassic(steps) {
+        let position = 0;
+        pathClassic = [position];
+        for (let i = 0; i < steps; i++) {
+            position += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire
+            pathClassic.push(position);
+        }
+        drawWalk(pathClassic, 'Marche Aléatoire Classique');
+    }
+
+    function randomWalk2D(steps) {
+        let position = { x: 0, y: 0 };
+        path2D = [{ ...position }];
+        for (let i = 0; i < steps; i++) {
+            const direction = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+            switch (direction) {
+                case 0: position.y += 1; break; // haut
+                case 1: position.y -= 1; break; // bas
+                case 2: position.x -= 1; break; // gauche
+                case 3: position.x += 1; break; // droite
+            }
+            path2D.push({ ...position });
+        }
+        drawWalk2D(path2D, 'Marche Aléatoire en 2D');
+    }
+
+    function randomWalk3D(steps) {
+        let position = { x: 0, y: 0, z: 0 };
+        path3D = [{ ...position }];
+        for (let i = 0; i < steps; i++) {
+            const direction = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+            switch (direction) {
+                case 0: position.x += 1; break; // droite
+                case 1: position.x -= 1; break; // gauche
+                case 2: position.y += 1; break; // haut
+                case 3: position.y -= 1; break; // bas
+                case 4: position.z += 1; break; // avant
+                case 5: position.z -= 1; break; // arrière
+            }
+            path3D.push({ ...position });
+        }
+        drawWalk3D(path3D, 'Marche Aléatoire en 3D');
+    }
+
+    function drawWalk(path, title) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la marche
+        ctx.beginPath();
+        ctx.moveTo(0, 200); // Position de départ
+
+        for (let i = 0; i < path.length; i++) {
+            ctx.lineTo(i * (800 / steps), 200 - path[i] * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+        ctx.fillText(title, 10, 20);
+    }
+
+    function drawWalk2D(path, title) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la marche en 2D
+        ctx.beginPath();
+        ctx.moveTo(400, 200); // Position de départ
+
+        for (let i = 0; i < path.length; i++) {
+            ctx.lineTo(400 + path[i].x * 20, 200 - path[i].y * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+        ctx.fillText(title, 10, 20);
+    }
+
+    function drawWalk3D(path, title) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Afficher le titre
+        ctx.fillText(title, 10, 20);
+        ctx.fillText("Marche en 3D:", 10, 50);
+
+        // Définir les dimensions du cube
+        const cubeSize = 100;
+        const offsetX = ctx.canvas.width / 2;
+        const offsetY = ctx.canvas.height / 2;
+
+        // Dessiner le cube
+        ctx.strokeStyle = '#ccc';
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
+        ctx.stroke();
+
+        // Dessiner la marche en 3D
+        for (let i = 0; i < path.length; i++) {
+            const x = offsetX + path[i].x * 10; // Ajuster l'échelle
+            const y = offsetY - path[i].y * 10; // Ajuster l'échelle
+            const z = path[i].z; // Utiliser z pour la profondeur
+
+            // Projeter les coordonnées 3D sur le canevas 2D
+            const projectedX = x + (z * 5); // Projection en fonction de z
+            const projectedY = y - (z * 5); // Projection en fonction de z
+
+            // Déterminer la couleur en fonction de la profondeur
+            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+            ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
+
+            // Dessiner le point
             ctx.beginPath();
-            ctx.arc(x, y, size, 0, Math.PI * 2);
-            ctx.fillStyle = getColor(colors, i / iterations);
+            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
             ctx.fill();
         }
     }
 
-    // Fonction pour obtenir une couleur
-    function getColor(scheme, t) {
-        switch(scheme) {
-            case 'quantum':
-                return `hsl(200, 80%, ${50 + 30 * Math.sin(t * Math.PI * 2)}%)`;
-            case 'rainbow':
-                return `hsl(${t * 360}, 80%, 50%)`;
-            case 'monochrome':
-                return `hsl(0, 0%, ${t * 100}%)`;
-            case 'neon':
-                return `hsl(${300 + t * 60}, 100%, 60%)`;
-            default:
-                return `hsl(200, 80%, 50%)`;
+    function randomWalkQuantum(steps) {
+        let position1 = 0;
+        let position2 = 0;
+        const pathQuantum1 = [position1];
+        const pathQuantum2 = [position2];
+
+        for (let i = 0; i < steps; i++) {
+            position1 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la première marche
+            position2 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la deuxième marche
+            pathQuantum1.push(position1);
+            pathQuantum2.push(position2);
+        }
+        drawWalkQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    }
+
+    function randomWalk2DQuantum(steps) {
+        let position1 = { x: 0, y: 0 };
+        let position2 = { x: 0, y: 0 };
+        const pathQuantum1 = [{ ...position1 }];
+        const pathQuantum2 = [{ ...position2 }];
+
+        for (let i = 0; i < steps; i++) {
+            const direction1 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+            const direction2 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+
+            // Déplacement pour la première marche
+            switch (direction1) {
+                case 0: position1.y += 1; break; // haut
+                case 1: position1.y -= 1; break; // bas
+                case 2: position1.x -= 1; break; // gauche
+                case 3: position1.x += 1; break; // droite
+            }
+            pathQuantum1.push({ ...position1 });
+
+            // Déplacement pour la deuxième marche
+            switch (direction2) {
+                case 0: position2.y += 1; break; // haut
+                case 1: position2.y -= 1; break; // bas
+                case 2: position2.x -= 1; break; // gauche
+                case 3: position2.x += 1; break; // droite
+            }
+            pathQuantum2.push({ ...position2 });
+        }
+        drawWalk2DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    }
+
+    function randomWalk3DQuantum(steps) {
+        let position1 = { x: 0, y: 0, z: 0 };
+        let position2 = { x: 0, y: 0, z: 0 };
+        const pathQuantum1 = [{ ...position1 }];
+        const pathQuantum2 = [{ ...position2 }];
+
+        for (let i = 0; i < steps; i++) {
+            const direction1 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+            const direction2 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+
+            // Déplacement pour la première marche
+            switch (direction1) {
+                case 0: position1.x += 1; break; // droite
+                case 1: position1.x -= 1; break; // gauche
+                case 2: position1.y += 1; break; // haut
+                case 3: position1.y -= 1; break; // bas
+                case 4: position1.z += 1; break; // avant
+                case 5: position1.z -= 1; break; // arrière
+            }
+            pathQuantum1.push({ ...position1 });
+
+            // Déplacement pour la deuxième marche
+            switch (direction2) {
+                case 0: position2.x += 1; break; // droite
+                case 1: position2.x -= 1; break; // gauche
+                case 2: position2.y += 1; break; // haut
+                case 3: position2.y -= 1; break; // bas
+                case 4: position2.z += 1; break; // avant
+                case 5: position2.z -= 1; break; // arrière
+            }
+            pathQuantum2.push({ ...position2 });
+        }
+        drawWalk3DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    }
+
+    function drawWalkQuantum(path1, path2, title1, title2) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la première marche quantique
+        ctx.beginPath();
+        ctx.moveTo(0, 200); // Position de départ
+
+        for (let i = 0; i < path1.length; i++) {
+            ctx.lineTo(i * (800 / path1.length), 200 - path1[i] * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+        ctx.fillText(title1, 10, 20);
+
+        // Dessiner la deuxième marche quantique
+        ctx.beginPath();
+        ctx.moveTo(0, 200); // Position de départ
+
+        for (let i = 0; i < path2.length; i++) {
+            ctx.lineTo(i * (800 / path2.length), 200 - path2[i] * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+        ctx.fillText(title2, 10, 40);
+    }
+
+    function drawWalk2DQuantum(path1, path2, title1, title2) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Dessiner les axes
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+        ctx.lineTo(800, 200); // Axe horizontal
+        ctx.moveTo(400, 0);
+        ctx.lineTo(400, 400); // Axe vertical
+        ctx.strokeStyle = '#ccc';
+        ctx.stroke();
+
+        // Dessiner la première marche quantique en 2D
+        ctx.beginPath();
+        ctx.moveTo(400, 200); // Position de départ
+
+        for (let i = 0; i < path1.length; i++) {
+            ctx.lineTo(400 + path1[i].x * 20, 200 - path1[i].y * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+        ctx.fillText(title1, 10, 20);
+
+        // Dessiner la deuxième marche quantique en 2D
+        ctx.beginPath();
+        ctx.moveTo(400, 200); // Position de départ
+
+        for (let i = 0; i < path2.length; i++) {
+            ctx.lineTo(400 + path2[i].x * 20, 200 - path2[i].y * 20); // Ajuster l'échelle
+        }
+
+        ctx.strokeStyle = 'orange';
+        ctx.stroke();
+        ctx.fillText(title2, 10, 40);
+    }
+
+    function drawWalk3DQuantum(path1, path2, title1, title2) {
+        const ctx = document.getElementById('walkCanvas').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+        // Afficher les titres
+        ctx.fillText(title1, 10, 20);
+        ctx.fillText(title2, 10, 40);
+
+        // Définir les dimensions du cube
+        const cubeSize = 100;
+        const offsetX = ctx.canvas.width / 2;
+        const offsetY = ctx.canvas.height / 2;
+
+        // Dessiner le cube
+        ctx.strokeStyle = '#ccc';
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
+        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
+        ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
+        ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
+        ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
+        ctx.stroke();
+
+        // Dessiner la marche quantique en 3D
+        for (let i = 0; i < path1.length; i++) {
+            const x = offsetX + path1[i].x * 10; // Ajuster l'échelle
+            const y = offsetY - path1[i].y * 10; // Ajuster l'échelle
+            const z = path1[i].z; // Utiliser z pour la profondeur
+
+            // Projeter les coordonnées 3D sur le canevas 2D
+            const projectedX = x + (z * 5); // Projection en fonction de z
+            const projectedY = y - (z * 5); // Projection en fonction de z
+
+            // Déterminer la couleur en fonction de la profondeur
+            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+            ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
+
+            // Dessiner le point
+            ctx.beginPath();
+            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+            ctx.fill();
+        }
+
+        // Dessiner la deuxième marche quantique en 3D
+        for (let i = 0; i < path2.length; i++) {
+            const x = offsetX + path2[i].x * 10; // Ajuster l'échelle
+            const y = offsetY - path2[i].y * 10; // Ajuster l'échelle
+            const z = path2[i].z; // Utiliser z pour la profondeur
+
+            // Projeter les coordonnées 3D sur le canevas 2D
+            const projectedX = x + (z * 5); // Projection en fonction de z
+            const projectedY = y - (z * 5); // Projection en fonction de z
+
+            // Déterminer la couleur en fonction de la profondeur
+            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+            ctx.fillStyle = `rgba(255, 0, 0, ${alpha})`; // Couleur rouge avec transparence
+
+            // Dessiner le point
+            ctx.beginPath();
+            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+            ctx.fill();
         }
     }
 
-    // Téléchargement de l'art
-    downloadBtn.addEventListener('click', function() {
-        const link = document.createElement('a');
-        link.download = 'quantum-art.png';
-        link.href = canvas.toDataURL();
-        link.click();
+    const walkType = document.getElementById('walkType');
+    const movementType = document.getElementById('movementType');
+
+    function generateWalk() {
+        steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes ici
+        const selectedWalkType = walkType.value;
+        const selectedMovementType = movementType.value;
+
+        if (selectedWalkType === 'classic') {
+            randomWalkClassic(steps);
+            document.getElementById('resultText').innerText = "Marche Aléatoire Classique générée.";
+
+            // Ne pas appeler le mouvement 2D si le mouvement 3D est sélectionné
+            if (selectedMovementType === 'linear') {
+                randomWalkClassic(steps);
+                document.getElementById('resultText').innerText = "Marche Aléatoire Linéaire générée.";
+            } else if (selectedMovementType === '2d') {
+                randomWalk2D(steps);
+                document.getElementById('resultText').innerText = "Marche Aléatoire en 2D générée.";
+            } else if (selectedMovementType === '3d') {
+                randomWalk3D(steps);
+                document.getElementById('resultText').innerText = "Marche Aléatoire en 3D générée.";
+            }
+        } else if (selectedWalkType === 'quantum') {
+            // Appel à l'API pour mesurer la probabilité
+            fetch('/measure_probability')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + data.probabilities.join(", ");
+                    document.getElementById('resultText').innerText = "Marche Aléatoire Quantique générée.";
+
+                    // Dessiner deux marches quantiques
+                    if (selectedMovementType === 'linear') {
+                        randomWalkQuantum(steps);
+                    } else if (selectedMovementType === '2d') {
+                        randomWalk2DQuantum(steps);
+                    } else if (selectedMovementType === '3d') {
+                        randomWalk3DQuantum(steps);
+                    }
+                });
+        } else if (selectedWalkType === 'qiskit') {
+            // Appeler le fichier Qiskit pour mesurer la probabilité
+            fetch('/run_qiskit')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + JSON.stringify(data.probabilities);
+                    document.getElementById('resultText').innerText = "Marche Aléatoire Qiskit générée.";
+                });
+        } else if (selectedWalkType === 'ibm') {
+            // Appeler le fichier IBM pour exécuter le circuit
+            fetch('/run_ibm')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quantumResults').innerText = "Résultats: " + JSON.stringify(data.results);
+                    document.getElementById('resultText').innerText = "Marche Aléatoire IBM générée.";
+                });
+        }
+    }
+
+    // Appel de la fonction de génération lors de la soumission du formulaire
+    document.querySelector('.walk-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+        generateWalk();
     });
-});
-</script>
-{% endblock %} 
+
+    function updateSteps() {
+        steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes
+    }
+
+    //##################### end quantum random walk #########################################
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Example data: measurement results
+      const measurementResults = {
+        0.2: "00000000",
+        0.3: "11111111",
+        0.1: "01010101",
+        0.4: "10101010",
+      };
+
+      const notes = generateNotesFromQuantumStates(measurementResults);
+      visualizeNotes(notes);
+      setupPlayback(notes);
+    });
+
+    // Generate notes from quantum states
+    function generateNotesFromQuantumStates(measurementResults) {
+      const notes = [];
+      let currentTime = 0;
+
+      for (const { probability, state } of measurementResults) {
+        console.log("#######", "proba: ",probability, ", bitstring: ",state);
+        const pitch = (parseInt(state, 2) % 88) + 21; // Map to MIDI range (21-108)
+
+        let durationBits = state;
+        if (state.length>2) 
+        {
+            durationBits = state.slice(-2); // Use last 2 bits for duration
+        } 
+        const duration =
+          durationBits === "00" ? 0.25 :
+          durationBits === "01" ? 0.5 :
+          durationBits === "10" ? 1 : 1.5;
+        const roundedProbability = Math.round(probability * 10) / 10; // Round to nearest 0.1
+        const velocity = Math.round(roundedProbability * 100) + 20; // Map rounded probability to volume
+
+
+        notes.push({ pitch, startTime: currentTime, duration, velocity });
+        currentTime += duration*0.6; // Increment time for the next note
+      }
+
+      return notes;
+    }
+
+    // Visualize notes as a piano roll
+    function visualizeNotes(notes) {
+      const canvas = document.getElementById("piano-roll");
+      const ctx = canvas.getContext("2d");
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw piano roll
+      notes.forEach(note => {
+        const x = note.startTime * 50; // Time axis
+        const y = canvas.height - (note.pitch - 21) * 4; // Pitch axis
+        const width = note.duration * 50; // Note duration
+        const height = 4; // Note bar height
+
+        ctx.fillStyle = `rgba(0, 128, 255, ${note.velocity / 127})`; // Dynamic color
+        ctx.fillRect(x, y, width, height);
+      });
+    }
+
+    // Setup playback using Tone.js
+    function setupPlayback(notes) {
+      const synth = new Tone.Synth().toDestination();
+
+      document.getElementById("play-music").addEventListener("click", () => {
+        // Schedule notes
+        notes.forEach(note => {
+          const time = Tone.now() + note.startTime;
+          const freq = Tone.Frequency(note.pitch, "midi").toFrequency();
+          synth.triggerAttackRelease(freq, note.duration, time, note.velocity / 127);
+        });
+      });
+
+      document.getElementById("stop-music").addEventListener("click", () => {
+        Tone.Transport.stop(); // Stop all playback
+      });
+    }
+
+  </script>
+
+<style>
+    #circuit-builder {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .qubit-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px; /* Add space between qubit lines */
+    }
+    .qubit-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 50px;
+    }
+    .qubit-wire {
+        flex-grow: 1;
+        height: 40px;
+        border-top: 2px solid #000;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;  /* Add some padding at the start of the wire */
+    }
+    .gate {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #000;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: move;
+        position: relative;
+        z-index: 1;
+        margin-right: 10px;  /* Add some space between gates */
+    }
+    .gate-spacer {
+        width: 10px;
+        height: 40px;
+    }
+    #gate-palette {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    #results {
+        margin-top: 20px;
+        width: 100%;
+        max-width: 800px;
+    }
+    .delete-qubit {
+        background: none;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        color: red;
+        padding: 0;
+        width: 15px;
+        height: 15px;
+        line-height: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .cnot-target {
+        cursor: crosshair;
+    }
+    .no-select {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    #circuit-area {
+        position: relative;
+        padding-bottom: 20px; /* Add some padding at the bottom */
+        overflow: visible; /* Ensure SVG lines are not cut off */
+    }
+
+    .random-walk-container {
+        text-align: center;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .walk-form {
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 1.2em;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    select,
+    input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .submit-button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.2em;
+        transition: background-color 0.3s;
+    }
+
+    .submit-button:hover {
+        background-color: #2980b9;
+    }
+
+    .results-container {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        background-color: #ecf0f1;
+    }
+
+    #resultText {
+        font-size: 1.2em;
+        color: #2c3e50;
+    }
+</style>
+{% endblock %}
