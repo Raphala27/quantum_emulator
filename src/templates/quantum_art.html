@@ -33,7 +33,7 @@
     </div>
     </div>
 
-    <div class="random-walk-container">
+    <!-- <div class="random-walk-container">
         <h2>Random Walk Simulation</h2>
     
         <form method="get" action="/random_walk" class="walk-form">
@@ -77,7 +77,7 @@
             <p id="resultText">Sélectionnez les options et cliquez sur "Générer".</p>
             <p id="quantumResults"></p>
         </div>
-    </div>
+    </div> -->
 
     <div id="music-visualization">
         <h2>Piano Roll</h2>
@@ -498,448 +498,448 @@
 
     // ##################### part quantum random walk #########################################
 
-    let steps = parseInt(document.getElementById('iterations').value); // Nombre d'étapes
-    let pathClassic = [];
-    let path2D = [];
-    let path3D = [];
-
-    function randomWalkClassic(steps) {
-        let position = 0;
-        pathClassic = [position];
-        for (let i = 0; i < steps; i++) {
-            position += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire
-            pathClassic.push(position);
-        }
-        drawWalk(pathClassic, 'Marche Aléatoire Classique');
-    }
-
-    function randomWalk2D(steps) {
-        let position = { x: 0, y: 0 };
-        path2D = [{ ...position }];
-        for (let i = 0; i < steps; i++) {
-            const direction = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
-            switch (direction) {
-                case 0: position.y += 1; break; // haut
-                case 1: position.y -= 1; break; // bas
-                case 2: position.x -= 1; break; // gauche
-                case 3: position.x += 1; break; // droite
-            }
-            path2D.push({ ...position });
-        }
-        drawWalk2D(path2D, 'Marche Aléatoire en 2D');
-    }
-
-    function randomWalk3D(steps) {
-        let position = { x: 0, y: 0, z: 0 };
-        path3D = [{ ...position }];
-        for (let i = 0; i < steps; i++) {
-            const direction = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
-            switch (direction) {
-                case 0: position.x += 1; break; // droite
-                case 1: position.x -= 1; break; // gauche
-                case 2: position.y += 1; break; // haut
-                case 3: position.y -= 1; break; // bas
-                case 4: position.z += 1; break; // avant
-                case 5: position.z -= 1; break; // arrière
-            }
-            path3D.push({ ...position });
-        }
-        drawWalk3D(path3D, 'Marche Aléatoire en 3D');
-    }
-
-    function drawWalk(path, title) {
-        const ctx = document.getElementById('walkCanvas').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
-
-        // Dessiner les axes
-        ctx.beginPath();
-        ctx.moveTo(0, 200);
-        ctx.lineTo(800, 200); // Axe horizontal
-        ctx.moveTo(400, 0);
-        ctx.lineTo(400, 400); // Axe vertical
-        ctx.strokeStyle = '#ccc';
-        ctx.stroke();
-
-        // Dessiner la marche
-        ctx.beginPath();
-        ctx.moveTo(0, 200); // Position de départ
-
-        for (let i = 0; i < path.length; i++) {
-            ctx.lineTo(i * (800 / steps), 200 - path[i] * 20); // Ajuster l'échelle
-        }
-
-        ctx.strokeStyle = 'blue';
-        ctx.stroke();
-        ctx.fillText(title, 10, 20);
-    }
-
-    function drawWalk2D(path, title) {
-        const ctx = document.getElementById('walkCanvas').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
-
-        // Dessiner les axes
-        ctx.beginPath();
-        ctx.moveTo(0, 200);
-        ctx.lineTo(800, 200); // Axe horizontal
-        ctx.moveTo(400, 0);
-        ctx.lineTo(400, 400); // Axe vertical
-        ctx.strokeStyle = '#ccc';
-        ctx.stroke();
-
-        // Dessiner la marche en 2D
-        ctx.beginPath();
-        ctx.moveTo(400, 200); // Position de départ
-
-        for (let i = 0; i < path.length; i++) {
-            ctx.lineTo(400 + path[i].x * 20, 200 - path[i].y * 20); // Ajuster l'échelle
-        }
-
-        ctx.strokeStyle = 'green';
-        ctx.stroke();
-        ctx.fillText(title, 10, 20);
-    }
-
-    function drawWalk3D(path, title) {
-        const ctx = document.getElementById('walkCanvas').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
-
-        // Afficher le titre
-        ctx.fillText(title, 10, 20);
-        ctx.fillText("Marche en 3D:", 10, 50);
-
-        // Définir les dimensions du cube
-        const cubeSize = 100;
-        const offsetX = ctx.canvas.width / 2;
-        const offsetY = ctx.canvas.height / 2;
-
-        // Dessiner le cube
-        ctx.strokeStyle = '#ccc';
-        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
-        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
-        ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
-        ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
-        ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
-        ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
-        ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
-        ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
-        ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
-        ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
-        ctx.stroke();
-
-        // Dessiner la marche en 3D
-        for (let i = 0; i < path.length; i++) {
-            const x = offsetX + path[i].x * 10; // Ajuster l'échelle
-            const y = offsetY - path[i].y * 10; // Ajuster l'échelle
-            const z = path[i].z; // Utiliser z pour la profondeur
-
-            // Projeter les coordonnées 3D sur le canevas 2D
-            const projectedX = x + (z * 5); // Projection en fonction de z
-            const projectedY = y - (z * 5); // Projection en fonction de z
-
-            // Déterminer la couleur en fonction de la profondeur
-            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
-            ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
-
-            // Dessiner le point
-            ctx.beginPath();
-            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
-            ctx.fill();
-        }
-    }
-
-    function randomWalkQuantum(steps) {
-        let position1 = 0;
-        let position2 = 0;
-        const pathQuantum1 = [position1];
-        const pathQuantum2 = [position2];
-
-        for (let i = 0; i < steps; i++) {
-            position1 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la première marche
-            position2 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la deuxième marche
-            pathQuantum1.push(position1);
-            pathQuantum2.push(position2);
-        }
-        drawWalkQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
-    }
-
-    function randomWalk2DQuantum(steps) {
-        let position1 = { x: 0, y: 0 };
-        let position2 = { x: 0, y: 0 };
-        const pathQuantum1 = [{ ...position1 }];
-        const pathQuantum2 = [{ ...position2 }];
-
-        for (let i = 0; i < steps; i++) {
-            const direction1 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
-            const direction2 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
-
-            // Déplacement pour la première marche
-            switch (direction1) {
-                case 0: position1.y += 1; break; // haut
-                case 1: position1.y -= 1; break; // bas
-                case 2: position1.x -= 1; break; // gauche
-                case 3: position1.x += 1; break; // droite
-            }
-            pathQuantum1.push({ ...position1 });
-
-            // Déplacement pour la deuxième marche
-            switch (direction2) {
-                case 0: position2.y += 1; break; // haut
-                case 1: position2.y -= 1; break; // bas
-                case 2: position2.x -= 1; break; // gauche
-                case 3: position2.x += 1; break; // droite
-            }
-            pathQuantum2.push({ ...position2 });
-        }
-        drawWalk2DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
-    }
-
-    function randomWalk3DQuantum(steps) {
-        let position1 = { x: 0, y: 0, z: 0 };
-        let position2 = { x: 0, y: 0, z: 0 };
-        const pathQuantum1 = [{ ...position1 }];
-        const pathQuantum2 = [{ ...position2 }];
-
-        for (let i = 0; i < steps; i++) {
-            const direction1 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
-            const direction2 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
-
-            // Déplacement pour la première marche
-            switch (direction1) {
-                case 0: position1.x += 1; break; // droite
-                case 1: position1.x -= 1; break; // gauche
-                case 2: position1.y += 1; break; // haut
-                case 3: position1.y -= 1; break; // bas
-                case 4: position1.z += 1; break; // avant
-                case 5: position1.z -= 1; break; // arrière
-            }
-            pathQuantum1.push({ ...position1 });
-
-            // Déplacement pour la deuxième marche
-            switch (direction2) {
-                case 0: position2.x += 1; break; // droite
-                case 1: position2.x -= 1; break; // gauche
-                case 2: position2.y += 1; break; // haut
-                case 3: position2.y -= 1; break; // bas
-                case 4: position2.z += 1; break; // avant
-                case 5: position2.z -= 1; break; // arrière
-            }
-            pathQuantum2.push({ ...position2 });
-        }
-        drawWalk3DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
-    }
-
-    function drawWalkQuantum(path1, path2, title1, title2) {
-        const ctx = document.getElementById('walkCanvas').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
-
-        // Dessiner les axes
-        ctx.beginPath();
-        ctx.moveTo(0, 200);
-        ctx.lineTo(800, 200); // Axe horizontal
-        ctx.moveTo(400, 0);
-        ctx.lineTo(400, 400); // Axe vertical
-        ctx.strokeStyle = '#ccc';
-        ctx.stroke();
-
-        // Dessiner la première marche quantique
-        ctx.beginPath();
-        ctx.moveTo(0, 200); // Position de départ
-
-        for (let i = 0; i < path1.length; i++) {
-            ctx.lineTo(i * (800 / path1.length), 200 - path1[i] * 20); // Ajuster l'échelle
-        }
-
-        ctx.strokeStyle = 'blue';
-        ctx.stroke();
-        ctx.fillText(title1, 10, 20);
-
-        // Dessiner la deuxième marche quantique
-        ctx.beginPath();
-        ctx.moveTo(0, 200); // Position de départ
-
-        for (let i = 0; i < path2.length; i++) {
-            ctx.lineTo(i * (800 / path2.length), 200 - path2[i] * 20); // Ajuster l'échelle
-        }
-
-        ctx.strokeStyle = 'red';
-        ctx.stroke();
-        ctx.fillText(title2, 10, 40);
-    }
-
-    function drawWalk2DQuantum(path1, path2, title1, title2) {
-        const ctx = document.getElementById('walkCanvas').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
-
-        // Dessiner les axes
-        ctx.beginPath();
-        ctx.moveTo(0, 200);
-        ctx.lineTo(800, 200); // Axe horizontal
-        ctx.moveTo(400, 0);
-        ctx.lineTo(400, 400); // Axe vertical
-        ctx.strokeStyle = '#ccc';
-        ctx.stroke();
-
-        // Dessiner la première marche quantique en 2D
-        ctx.beginPath();
-        ctx.moveTo(400, 200); // Position de départ
-
-        for (let i = 0; i < path1.length; i++) {
-            ctx.lineTo(400 + path1[i].x * 20, 200 - path1[i].y * 20); // Ajuster l'échelle
-        }
-
-        ctx.strokeStyle = 'green';
-        ctx.stroke();
-        ctx.fillText(title1, 10, 20);
-
-        // Dessiner la deuxième marche quantique en 2D
-        ctx.beginPath();
-        ctx.moveTo(400, 200); // Position de départ
-
-        for (let i = 0; i < path2.length; i++) {
-            ctx.lineTo(400 + path2[i].x * 20, 200 - path2[i].y * 20); // Ajuster l'échelle
-        }
-
-        ctx.strokeStyle = 'orange';
-        ctx.stroke();
-        ctx.fillText(title2, 10, 40);
-    }
-
-    function drawWalk3DQuantum(path1, path2, title1, title2) {
-        const ctx = document.getElementById('walkCanvas').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
-
-        // Afficher les titres
-        ctx.fillText(title1, 10, 20);
-        ctx.fillText(title2, 10, 40);
-
-        // Définir les dimensions du cube
-        const cubeSize = 100;
-        const offsetX = ctx.canvas.width / 2;
-        const offsetY = ctx.canvas.height / 2;
-
-        // Dessiner le cube
-        ctx.strokeStyle = '#ccc';
-        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
-        ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
-        ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
-        ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
-        ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
-        ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
-        ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
-        ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
-        ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
-        ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
-        ctx.stroke();
-
-        // Dessiner la marche quantique en 3D
-        for (let i = 0; i < path1.length; i++) {
-            const x = offsetX + path1[i].x * 10; // Ajuster l'échelle
-            const y = offsetY - path1[i].y * 10; // Ajuster l'échelle
-            const z = path1[i].z; // Utiliser z pour la profondeur
-
-            // Projeter les coordonnées 3D sur le canevas 2D
-            const projectedX = x + (z * 5); // Projection en fonction de z
-            const projectedY = y - (z * 5); // Projection en fonction de z
-
-            // Déterminer la couleur en fonction de la profondeur
-            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
-            ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
-
-            // Dessiner le point
-            ctx.beginPath();
-            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
-            ctx.fill();
-        }
-
-        // Dessiner la deuxième marche quantique en 3D
-        for (let i = 0; i < path2.length; i++) {
-            const x = offsetX + path2[i].x * 10; // Ajuster l'échelle
-            const y = offsetY - path2[i].y * 10; // Ajuster l'échelle
-            const z = path2[i].z; // Utiliser z pour la profondeur
-
-            // Projeter les coordonnées 3D sur le canevas 2D
-            const projectedX = x + (z * 5); // Projection en fonction de z
-            const projectedY = y - (z * 5); // Projection en fonction de z
-
-            // Déterminer la couleur en fonction de la profondeur
-            const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
-            ctx.fillStyle = `rgba(255, 0, 0, ${alpha})`; // Couleur rouge avec transparence
-
-            // Dessiner le point
-            ctx.beginPath();
-            ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
-            ctx.fill();
-        }
-    }
-
-    const walkType = document.getElementById('walkType');
-    const movementType = document.getElementById('movementType');
-
-    function generateWalk() {
-        steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes ici
-        const selectedWalkType = walkType.value;
-        const selectedMovementType = movementType.value;
-
-        if (selectedWalkType === 'classic') {
-            randomWalkClassic(steps);
-            document.getElementById('resultText').innerText = "Marche Aléatoire Classique générée.";
-
-            // Ne pas appeler le mouvement 2D si le mouvement 3D est sélectionné
-            if (selectedMovementType === 'linear') {
-                randomWalkClassic(steps);
-                document.getElementById('resultText').innerText = "Marche Aléatoire Linéaire générée.";
-            } else if (selectedMovementType === '2d') {
-                randomWalk2D(steps);
-                document.getElementById('resultText').innerText = "Marche Aléatoire en 2D générée.";
-            } else if (selectedMovementType === '3d') {
-                randomWalk3D(steps);
-                document.getElementById('resultText').innerText = "Marche Aléatoire en 3D générée.";
-            }
-        } else if (selectedWalkType === 'quantum') {
-            // Appel à l'API pour mesurer la probabilité
-            fetch('/measure_probability')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + data.probabilities.join(", ");
-                    document.getElementById('resultText').innerText = "Marche Aléatoire Quantique générée.";
-
-                    // Dessiner deux marches quantiques
-                    if (selectedMovementType === 'linear') {
-                        randomWalkQuantum(steps);
-                    } else if (selectedMovementType === '2d') {
-                        randomWalk2DQuantum(steps);
-                    } else if (selectedMovementType === '3d') {
-                        randomWalk3DQuantum(steps);
-                    }
-                });
-        } else if (selectedWalkType === 'qiskit') {
-            // Appeler le fichier Qiskit pour mesurer la probabilité
-            fetch('/run_qiskit')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + JSON.stringify(data.probabilities);
-                    document.getElementById('resultText').innerText = "Marche Aléatoire Qiskit générée.";
-                });
-        } else if (selectedWalkType === 'ibm') {
-            // Appeler le fichier IBM pour exécuter le circuit
-            fetch('/run_ibm')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('quantumResults').innerText = "Résultats: " + JSON.stringify(data.results);
-                    document.getElementById('resultText').innerText = "Marche Aléatoire IBM générée.";
-                });
-        }
-    }
-
-    // Appel de la fonction de génération lors de la soumission du formulaire
-    document.querySelector('.walk-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Empêche le rechargement de la page
-        generateWalk();
-    });
-
-    function updateSteps() {
-        steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes
-    }
+    // let steps = parseInt(document.getElementById('iterations').value); // Nombre d'étapes
+    // let pathClassic = [];
+    // let path2D = [];
+    // let path3D = [];
+
+    // function randomWalkClassic(steps) {
+    //     let position = 0;
+    //     pathClassic = [position];
+    //     for (let i = 0; i < steps; i++) {
+    //         position += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire
+    //         pathClassic.push(position);
+    //     }
+    //     drawWalk(pathClassic, 'Marche Aléatoire Classique');
+    // }
+
+    // function randomWalk2D(steps) {
+    //     let position = { x: 0, y: 0 };
+    //     path2D = [{ ...position }];
+    //     for (let i = 0; i < steps; i++) {
+    //         const direction = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+    //         switch (direction) {
+    //             case 0: position.y += 1; break; // haut
+    //             case 1: position.y -= 1; break; // bas
+    //             case 2: position.x -= 1; break; // gauche
+    //             case 3: position.x += 1; break; // droite
+    //         }
+    //         path2D.push({ ...position });
+    //     }
+    //     drawWalk2D(path2D, 'Marche Aléatoire en 2D');
+    // }
+
+    // function randomWalk3D(steps) {
+    //     let position = { x: 0, y: 0, z: 0 };
+    //     path3D = [{ ...position }];
+    //     for (let i = 0; i < steps; i++) {
+    //         const direction = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+    //         switch (direction) {
+    //             case 0: position.x += 1; break; // droite
+    //             case 1: position.x -= 1; break; // gauche
+    //             case 2: position.y += 1; break; // haut
+    //             case 3: position.y -= 1; break; // bas
+    //             case 4: position.z += 1; break; // avant
+    //             case 5: position.z -= 1; break; // arrière
+    //         }
+    //         path3D.push({ ...position });
+    //     }
+    //     drawWalk3D(path3D, 'Marche Aléatoire en 3D');
+    // }
+
+    // function drawWalk(path, title) {
+    //     const ctx = document.getElementById('walkCanvas').getContext('2d');
+    //     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+    //     // Dessiner les axes
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200);
+    //     ctx.lineTo(800, 200); // Axe horizontal
+    //     ctx.moveTo(400, 0);
+    //     ctx.lineTo(400, 400); // Axe vertical
+    //     ctx.strokeStyle = '#ccc';
+    //     ctx.stroke();
+
+    //     // Dessiner la marche
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200); // Position de départ
+
+    //     for (let i = 0; i < path.length; i++) {
+    //         ctx.lineTo(i * (800 / steps), 200 - path[i] * 20); // Ajuster l'échelle
+    //     }
+
+    //     ctx.strokeStyle = 'blue';
+    //     ctx.stroke();
+    //     ctx.fillText(title, 10, 20);
+    // }
+
+    // function drawWalk2D(path, title) {
+    //     const ctx = document.getElementById('walkCanvas').getContext('2d');
+    //     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+    //     // Dessiner les axes
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200);
+    //     ctx.lineTo(800, 200); // Axe horizontal
+    //     ctx.moveTo(400, 0);
+    //     ctx.lineTo(400, 400); // Axe vertical
+    //     ctx.strokeStyle = '#ccc';
+    //     ctx.stroke();
+
+    //     // Dessiner la marche en 2D
+    //     ctx.beginPath();
+    //     ctx.moveTo(400, 200); // Position de départ
+
+    //     for (let i = 0; i < path.length; i++) {
+    //         ctx.lineTo(400 + path[i].x * 20, 200 - path[i].y * 20); // Ajuster l'échelle
+    //     }
+
+    //     ctx.strokeStyle = 'green';
+    //     ctx.stroke();
+    //     ctx.fillText(title, 10, 20);
+    // }
+
+    // function drawWalk3D(path, title) {
+    //     const ctx = document.getElementById('walkCanvas').getContext('2d');
+    //     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+    //     // Afficher le titre
+    //     ctx.fillText(title, 10, 20);
+    //     ctx.fillText("Marche en 3D:", 10, 50);
+
+    //     // Définir les dimensions du cube
+    //     const cubeSize = 100;
+    //     const offsetX = ctx.canvas.width / 2;
+    //     const offsetY = ctx.canvas.height / 2;
+
+    //     // Dessiner le cube
+    //     ctx.strokeStyle = '#ccc';
+    //     ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
+    //     ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
+    //     ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
+    //     ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
+    //     ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
+    //     ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
+    //     ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
+    //     ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
+    //     ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
+    //     ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
+    //     ctx.stroke();
+
+    //     // Dessiner la marche en 3D
+    //     for (let i = 0; i < path.length; i++) {
+    //         const x = offsetX + path[i].x * 10; // Ajuster l'échelle
+    //         const y = offsetY - path[i].y * 10; // Ajuster l'échelle
+    //         const z = path[i].z; // Utiliser z pour la profondeur
+
+    //         // Projeter les coordonnées 3D sur le canevas 2D
+    //         const projectedX = x + (z * 5); // Projection en fonction de z
+    //         const projectedY = y - (z * 5); // Projection en fonction de z
+
+    //         // Déterminer la couleur en fonction de la profondeur
+    //         const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+    //         ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
+
+    //         // Dessiner le point
+    //         ctx.beginPath();
+    //         ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+    //         ctx.fill();
+    //     }
+    // }
+
+    // function randomWalkQuantum(steps) {
+    //     let position1 = 0;
+    //     let position2 = 0;
+    //     const pathQuantum1 = [position1];
+    //     const pathQuantum2 = [position2];
+
+    //     for (let i = 0; i < steps; i++) {
+    //         position1 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la première marche
+    //         position2 += Math.random() < 0.5 ? -1 : 1; // Déplacement aléatoire pour la deuxième marche
+    //         pathQuantum1.push(position1);
+    //         pathQuantum2.push(position2);
+    //     }
+    //     drawWalkQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    // }
+
+    // function randomWalk2DQuantum(steps) {
+    //     let position1 = { x: 0, y: 0 };
+    //     let position2 = { x: 0, y: 0 };
+    //     const pathQuantum1 = [{ ...position1 }];
+    //     const pathQuantum2 = [{ ...position2 }];
+
+    //     for (let i = 0; i < steps; i++) {
+    //         const direction1 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+    //         const direction2 = Math.floor(Math.random() * 4); // 0: haut, 1: bas, 2: gauche, 3: droite
+
+    //         // Déplacement pour la première marche
+    //         switch (direction1) {
+    //             case 0: position1.y += 1; break; // haut
+    //             case 1: position1.y -= 1; break; // bas
+    //             case 2: position1.x -= 1; break; // gauche
+    //             case 3: position1.x += 1; break; // droite
+    //         }
+    //         pathQuantum1.push({ ...position1 });
+
+    //         // Déplacement pour la deuxième marche
+    //         switch (direction2) {
+    //             case 0: position2.y += 1; break; // haut
+    //             case 1: position2.y -= 1; break; // bas
+    //             case 2: position2.x -= 1; break; // gauche
+    //             case 3: position2.x += 1; break; // droite
+    //         }
+    //         pathQuantum2.push({ ...position2 });
+    //     }
+    //     drawWalk2DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    // }
+
+    // function randomWalk3DQuantum(steps) {
+    //     let position1 = { x: 0, y: 0, z: 0 };
+    //     let position2 = { x: 0, y: 0, z: 0 };
+    //     const pathQuantum1 = [{ ...position1 }];
+    //     const pathQuantum2 = [{ ...position2 }];
+
+    //     for (let i = 0; i < steps; i++) {
+    //         const direction1 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+    //         const direction2 = Math.floor(Math.random() * 6); // 0-5 pour les 6 directions
+
+    //         // Déplacement pour la première marche
+    //         switch (direction1) {
+    //             case 0: position1.x += 1; break; // droite
+    //             case 1: position1.x -= 1; break; // gauche
+    //             case 2: position1.y += 1; break; // haut
+    //             case 3: position1.y -= 1; break; // bas
+    //             case 4: position1.z += 1; break; // avant
+    //             case 5: position1.z -= 1; break; // arrière
+    //         }
+    //         pathQuantum1.push({ ...position1 });
+
+    //         // Déplacement pour la deuxième marche
+    //         switch (direction2) {
+    //             case 0: position2.x += 1; break; // droite
+    //             case 1: position2.x -= 1; break; // gauche
+    //             case 2: position2.y += 1; break; // haut
+    //             case 3: position2.y -= 1; break; // bas
+    //             case 4: position2.z += 1; break; // avant
+    //             case 5: position2.z -= 1; break; // arrière
+    //         }
+    //         pathQuantum2.push({ ...position2 });
+    //     }
+    //     drawWalk3DQuantum(pathQuantum1, pathQuantum2, 'Marche Aléatoire Quantique 1', 'Marche Aléatoire Quantique 2');
+    // }
+
+    // function drawWalkQuantum(path1, path2, title1, title2) {
+    //     const ctx = document.getElementById('walkCanvas').getContext('2d');
+    //     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+    //     // Dessiner les axes
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200);
+    //     ctx.lineTo(800, 200); // Axe horizontal
+    //     ctx.moveTo(400, 0);
+    //     ctx.lineTo(400, 400); // Axe vertical
+    //     ctx.strokeStyle = '#ccc';
+    //     ctx.stroke();
+
+    //     // Dessiner la première marche quantique
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200); // Position de départ
+
+    //     for (let i = 0; i < path1.length; i++) {
+    //         ctx.lineTo(i * (800 / path1.length), 200 - path1[i] * 20); // Ajuster l'échelle
+    //     }
+
+    //     ctx.strokeStyle = 'blue';
+    //     ctx.stroke();
+    //     ctx.fillText(title1, 10, 20);
+
+    //     // Dessiner la deuxième marche quantique
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200); // Position de départ
+
+    //     for (let i = 0; i < path2.length; i++) {
+    //         ctx.lineTo(i * (800 / path2.length), 200 - path2[i] * 20); // Ajuster l'échelle
+    //     }
+
+    //     ctx.strokeStyle = 'red';
+    //     ctx.stroke();
+    //     ctx.fillText(title2, 10, 40);
+    // }
+
+    // function drawWalk2DQuantum(path1, path2, title1, title2) {
+    //     const ctx = document.getElementById('walkCanvas').getContext('2d');
+    //     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+    //     // Dessiner les axes
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 200);
+    //     ctx.lineTo(800, 200); // Axe horizontal
+    //     ctx.moveTo(400, 0);
+    //     ctx.lineTo(400, 400); // Axe vertical
+    //     ctx.strokeStyle = '#ccc';
+    //     ctx.stroke();
+
+    //     // Dessiner la première marche quantique en 2D
+    //     ctx.beginPath();
+    //     ctx.moveTo(400, 200); // Position de départ
+
+    //     for (let i = 0; i < path1.length; i++) {
+    //         ctx.lineTo(400 + path1[i].x * 20, 200 - path1[i].y * 20); // Ajuster l'échelle
+    //     }
+
+    //     ctx.strokeStyle = 'green';
+    //     ctx.stroke();
+    //     ctx.fillText(title1, 10, 20);
+
+    //     // Dessiner la deuxième marche quantique en 2D
+    //     ctx.beginPath();
+    //     ctx.moveTo(400, 200); // Position de départ
+
+    //     for (let i = 0; i < path2.length; i++) {
+    //         ctx.lineTo(400 + path2[i].x * 20, 200 - path2[i].y * 20); // Ajuster l'échelle
+    //     }
+
+    //     ctx.strokeStyle = 'orange';
+    //     ctx.stroke();
+    //     ctx.fillText(title2, 10, 40);
+    // }
+
+    // function drawWalk3DQuantum(path1, path2, title1, title2) {
+    //     const ctx = document.getElementById('walkCanvas').getContext('2d');
+    //     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Effacer le canvas
+
+    //     // Afficher les titres
+    //     ctx.fillText(title1, 10, 20);
+    //     ctx.fillText(title2, 10, 40);
+
+    //     // Définir les dimensions du cube
+    //     const cubeSize = 100;
+    //     const offsetX = ctx.canvas.width / 2;
+    //     const offsetY = ctx.canvas.height / 2;
+
+    //     // Dessiner le cube
+    //     ctx.strokeStyle = '#ccc';
+    //     ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2, cubeSize, cubeSize); // Face avant
+    //     ctx.strokeRect(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize, cubeSize, cubeSize); // Face arrière
+    //     ctx.moveTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2);
+    //     ctx.lineTo(offsetX - cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière gauche
+    //     ctx.moveTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2);
+    //     ctx.lineTo(offsetX + cubeSize / 2, offsetY - cubeSize / 2 - cubeSize); // Lien avant-arrière droit
+    //     ctx.moveTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2);
+    //     ctx.lineTo(offsetX - cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière bas
+    //     ctx.moveTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2);
+    //     ctx.lineTo(offsetX + cubeSize / 2, offsetY + cubeSize / 2 - cubeSize); // Lien avant-arrière haut
+    //     ctx.stroke();
+
+    //     // Dessiner la marche quantique en 3D
+    //     for (let i = 0; i < path1.length; i++) {
+    //         const x = offsetX + path1[i].x * 10; // Ajuster l'échelle
+    //         const y = offsetY - path1[i].y * 10; // Ajuster l'échelle
+    //         const z = path1[i].z; // Utiliser z pour la profondeur
+
+    //         // Projeter les coordonnées 3D sur le canevas 2D
+    //         const projectedX = x + (z * 5); // Projection en fonction de z
+    //         const projectedY = y - (z * 5); // Projection en fonction de z
+
+    //         // Déterminer la couleur en fonction de la profondeur
+    //         const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+    //         ctx.fillStyle = `rgba(0, 0, 255, ${alpha})`; // Couleur bleue avec transparence
+
+    //         // Dessiner le point
+    //         ctx.beginPath();
+    //         ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+    //         ctx.fill();
+    //     }
+
+    //     // Dessiner la deuxième marche quantique en 3D
+    //     for (let i = 0; i < path2.length; i++) {
+    //         const x = offsetX + path2[i].x * 10; // Ajuster l'échelle
+    //         const y = offsetY - path2[i].y * 10; // Ajuster l'échelle
+    //         const z = path2[i].z; // Utiliser z pour la profondeur
+
+    //         // Projeter les coordonnées 3D sur le canevas 2D
+    //         const projectedX = x + (z * 5); // Projection en fonction de z
+    //         const projectedY = y - (z * 5); // Projection en fonction de z
+
+    //         // Déterminer la couleur en fonction de la profondeur
+    //         const alpha = Math.max(0, Math.min(1, 1 - (z / 10))); // Ajuster la profondeur pour la couleur
+    //         ctx.fillStyle = `rgba(255, 0, 0, ${alpha})`; // Couleur rouge avec transparence
+
+    //         // Dessiner le point
+    //         ctx.beginPath();
+    //         ctx.arc(projectedX, projectedY, 5, 0, Math.PI * 2); // Dessiner un point
+    //         ctx.fill();
+    //     }
+    // }
+
+    // const walkType = document.getElementById('walkType');
+    // const movementType = document.getElementById('movementType');
+
+    // function generateWalk() {
+    //     steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes ici
+    //     const selectedWalkType = walkType.value;
+    //     const selectedMovementType = movementType.value;
+
+    //     if (selectedWalkType === 'classic') {
+    //         randomWalkClassic(steps);
+    //         document.getElementById('resultText').innerText = "Marche Aléatoire Classique générée.";
+
+    //         // Ne pas appeler le mouvement 2D si le mouvement 3D est sélectionné
+    //         if (selectedMovementType === 'linear') {
+    //             randomWalkClassic(steps);
+    //             document.getElementById('resultText').innerText = "Marche Aléatoire Linéaire générée.";
+    //         } else if (selectedMovementType === '2d') {
+    //             randomWalk2D(steps);
+    //             document.getElementById('resultText').innerText = "Marche Aléatoire en 2D générée.";
+    //         } else if (selectedMovementType === '3d') {
+    //             randomWalk3D(steps);
+    //             document.getElementById('resultText').innerText = "Marche Aléatoire en 3D générée.";
+    //         }
+    //     } else if (selectedWalkType === 'quantum') {
+    //         // Appel à l'API pour mesurer la probabilité
+    //         fetch('/measure_probability')
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + data.probabilities.join(", ");
+    //                 document.getElementById('resultText').innerText = "Marche Aléatoire Quantique générée.";
+
+    //                 // Dessiner deux marches quantiques
+    //                 if (selectedMovementType === 'linear') {
+    //                     randomWalkQuantum(steps);
+    //                 } else if (selectedMovementType === '2d') {
+    //                     randomWalk2DQuantum(steps);
+    //                 } else if (selectedMovementType === '3d') {
+    //                     randomWalk3DQuantum(steps);
+    //                 }
+    //             });
+    //     } else if (selectedWalkType === 'qiskit') {
+    //         // Appeler le fichier Qiskit pour mesurer la probabilité
+    //         fetch('/run_qiskit')
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 document.getElementById('quantumResults').innerText = "Probabilités mesurées: " + JSON.stringify(data.probabilities);
+    //                 document.getElementById('resultText').innerText = "Marche Aléatoire Qiskit générée.";
+    //             });
+    //     } else if (selectedWalkType === 'ibm') {
+    //         // Appeler le fichier IBM pour exécuter le circuit
+    //         fetch('/run_ibm')
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 document.getElementById('quantumResults').innerText = "Résultats: " + JSON.stringify(data.results);
+    //                 document.getElementById('resultText').innerText = "Marche Aléatoire IBM générée.";
+    //             });
+    //     }
+    // }
+
+    // // Appel de la fonction de génération lors de la soumission du formulaire
+    // document.querySelector('.walk-form').addEventListener('submit', function (event) {
+    //     event.preventDefault(); // Empêche le rechargement de la page
+    //     generateWalk();
+    // });
+
+    // function updateSteps() {
+    //     steps = parseInt(document.getElementById('iterations').value); // Met à jour le nombre d'étapes
+    // }
 
     //##################### end quantum random walk #########################################
 
@@ -959,34 +959,92 @@
       setupPlayback(notes);
     });
 
-    // Generate notes from quantum states
     function generateNotesFromQuantumStates(measurementResults) {
-      const notes = [];
-      let currentTime = 0;
+        const notes = [];
+        let currentTime = 0;
 
-      for (const { probability, state } of measurementResults) {
-        console.log("#######", "proba: ",probability, ", bitstring: ",state);
-        const pitch = (parseInt(state, 2) % 88) + 21; // Map to MIDI range (21-108)
+        // Shuffle results for randomized note order
+        const shuffledResults = measurementResults.sort(() => Math.random() - 0.5);
 
-        let durationBits = state;
-        if (state.length>2) 
-        {
-            durationBits = state.slice(-2); // Use last 2 bits for duration
-        } 
-        const duration =
-          durationBits === "00" ? 0.25 :
-          durationBits === "01" ? 0.5 :
-          durationBits === "10" ? 1 : 1.5;
-        const roundedProbability = Math.round(probability * 10) / 10; // Round to nearest 0.1
-        const velocity = Math.round(roundedProbability * 100) + 20; // Map rounded probability to volume
+        for (const { probability, state } of shuffledResults) {
+            console.log("#######", "proba: ", probability, ", bitstring: ", state);
 
+            // Generate pitched notes
+            const basePitch = (parseInt(state, 2) % 88) + 21;
+            const pitch = basePitch + Math.round(Math.random() * 5) - 2; // Add variation (+/- 2 semitones)
 
-        notes.push({ pitch, startTime: currentTime, duration, velocity });
-        currentTime += duration*0.6; // Increment time for the next note
-      }
+            // Map last 2 bits to note duration
+            let durationBits = state.length > 2 ? state.slice(-2) : state;
+            const duration =
+            durationBits === "00" ? 0.25 : // 16th note
+            durationBits === "01" ? 0.5 :  // 8th note
+            durationBits === "10" ? 1 :    // Quarter note
+            1.5;                           // Dotted quarter note
 
-      return notes;
-    }
+            // Scale probabilities to velocity
+            const roundedProbability = Math.round(probability * 10) / 10;
+            const velocity = Math.min(Math.round(roundedProbability * 100) + 20, 127);
+
+            // Add pitched notes
+            notes.push({ pitch, startTime: currentTime, duration, velocity });
+
+            // Generate drum sounds based on binary state structure
+            if (state.length >= 4) {
+            const kickBit = state[0]; // First bit for kick
+            const snareBit = state[1]; // Second bit for snare
+            const hiHatBits = state.slice(2, 4); // Third and fourth bits for hi-hat
+
+            if (kickBit === "1") {
+                notes.push({
+                pitch: 36, // Kick drum
+                startTime: currentTime,
+                duration: 0.25,
+                velocity: 80
+                });
+            }
+
+            if (snareBit === "1") {
+                notes.push({
+                pitch: 38, // Snare drum
+                startTime: currentTime + 0.1, // Slight offset for groove
+                duration: 0.25,
+                velocity: 70
+                });
+            }
+
+            if (hiHatBits === "01") {
+                notes.push({
+                pitch: 42, // Closed hi-hat
+                startTime: currentTime + 0.2,
+                duration: 0.15,
+                velocity: 60
+                });
+            } else if (hiHatBits === "10") {
+                notes.push({
+                pitch: 46, // Open hi-hat
+                startTime: currentTime + 0.2,
+                duration: 0.15,
+                velocity: 70
+                });
+            }
+            }
+
+            // Increment time for the next note
+            currentTime += duration * 0.6;
+        }
+
+        // Add a base drum pattern for consistent rhythm
+        const baseDrumPattern = [
+            { pitch: 36, startTime: 0, duration: 0.25, velocity: 90 }, // Kick
+            { pitch: 38, startTime: 0.5, duration: 0.25, velocity: 80 }, // Snare
+            { pitch: 42, startTime: 1, duration: 0.25, velocity: 70 }, // Closed hi-hat
+            { pitch: 36, startTime: 1.5, duration: 0.25, velocity: 90 }, // Kick
+        ];
+        notes.push(...baseDrumPattern);
+
+        return notes;
+        }
+
 
     // Visualize notes as a piano roll
     function visualizeNotes(notes) {
