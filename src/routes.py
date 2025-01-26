@@ -8,10 +8,6 @@ import numpy as np
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return "Hello, World!"
-
 @app.errorhandler(Exception)
 def handle_exception(e):
     # Log the error
